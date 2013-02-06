@@ -1,0 +1,42 @@
+-classpath
+'/Users/branflake2267/git/GWTP/target/classes:/Users/branflake2267/git/GWTP/gwtp-build-tools/target/classes:/Users/branflake2267/git/GWTP/gwtp-core/target/classes:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-clients-common/target/classes:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-processors/target/classes:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-dispatch-shared/target/classes:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-dispatch-client/target/classes:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-dispatch-server/target/classes:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-tester/target/classes:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-mvp-client/target/classes:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-dispatch-test/target/classes:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-dispatch-server-guice/target/classes:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-dispatch-server-spring/target/classes:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-crawler/target/classes:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-crawler-service/target/classes:/Users/branflake2267/.m2/repository/xml-apis/xml-apis/1.3.04/xml-apis-1.3.04.jar:/Users/branflake2267/.m2/repository/com/google/inject/guice/3.0/guice-3.0.jar:/Users/branflake2267/.m2/repository/org/springframework/spring-asm/3.1.2.RELEASE/spring-asm-3.1.2.RELEASE.jar:/Users/branflake2267/.m2/repository/com/google/gwt/gwt-user/2.5.0/gwt-user-2.5.0.jar:/Users/branflake2267/.m2/repository/com/googlecode/objectify/objectify/4.0b1/objectify-4.0b1.jar:/Users/branflake2267/.m2/repository/junit/junit/4.11/junit-4.11.jar:/Users/branflake2267/.m2/repository/com/gwtplatform/gwtp-dispatch-client/1.0-RC-2-SNAPSHOT/gwtp-dispatch-client-1.0-RC-2-SNAPSHOT.jar:/Users/branflake2267/.m2/repository/org/springframework/spring-aop/3.1.2.RELEASE/spring-aop-3.1.2.RELEASE.jar:/Users/branflake2267/.m2/repository/com/gwtplatform/gwtp-dispatch-shared/1.0-RC-2-SNAPSHOT/gwtp-dispatch-shared-1.0-RC-2-SNAPSHOT.jar:/Users/branflake2267/.m2/repository/xerces/xercesImpl/2.9.1/xercesImpl-2.9.1.jar:/Users/branflake2267/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar:/Users/branflake2267/.m2/repository/com/google/inject/extensions/guice-servlet/3.0/guice-servlet-3.0.jar:/Users/branflake2267/.m2/repository/javax/persistence/persistence-api/1.0/persistence-api-1.0.jar:/Users/branflake2267/.m2/repository/org/apache/httpcomponents/httpclient/4.1.2/httpclient-4.1.2.jar:/Users/branflake2267/.m2/repository/com/gwtplatform/gwtp-build-tools/1.0-RC-2-SNAPSHOT/gwtp-build-tools-1.0-RC-2-SNAPSHOT.jar:/Users/branflake2267/.m2/repository/org/w3c/css/sac/1.3/sac-1.3.jar:/Users/branflake2267/.m2/repository/net/sourceforge/cssparser/cssparser/0.9.5/cssparser-0.9.5.jar:/Users/branflake2267/.m2/repository/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar:/Users/branflake2267/.m2/repository/com/gwtplatform/gwtp-clients-common/1.0-RC-2-SNAPSHOT/gwtp-clients-common-1.0-RC-2-SNAPSHOT.jar:/Users/branflake2267/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar:/Users/branflake2267/.m2/repository/joda-time/joda-time/2.1/joda-time-2.1.jar:/Users/branflake2267/.m2/repository/org/apache/httpcomponents/httpmime/4.1.2/httpmime-4.1.2.jar:/Users/branflake2267/.m2/repository/com/google/appengine/appengine-api-1.0-sdk/1.7.4/appengine-api-1.0-sdk-1.7.4.jar:/Users/branflake2267/.m2/repository/commons-lang/commons-lang/2.6/commons-lang-2.6.jar:/Users/branflake2267/.m2/repository/org/springframework/spring-beans/3.1.2.RELEASE/spring-beans-3.1.2.RELEASE.jar:/Users/branflake2267/.m2/repository/com/google/appengine/appengine-api-labs/1.7.2/appengine-api-labs-1.7.2.jar:/Users/branflake2267/.m2/repository/com/google/gwt/inject/gin/2.0.0/gin-2.0.0.jar:/Users/branflake2267/.m2/repository/org/apache/httpcomponents/httpcore/4.1.2/httpcore-4.1.2.jar:/Users/branflake2267/.m2/repository/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar:/Users/branflake2267/.m2/repository/org/springframework/spring-core/3.1.2.RELEASE/spring-core-3.1.2.RELEASE.jar:/Users/branflake2267/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA.jar:/Users/branflake2267/.m2/repository/org/joda/joda-money/0.6/joda-money-0.6.jar:/Users/branflake2267/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.0.6/jackson-annotations-2.0.6.jar:/Users/branflake2267/.m2/repository/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar:/Users/branflake2267/.m2/repository/net/sourceforge/htmlunit/htmlunit-core-js/2.9/htmlunit-core-js-2.9.jar:/Users/branflake2267/.m2/repository/org/springframework/spring-expression/3.1.2.RELEASE/spring-expression-3.1.2.RELEASE.jar:/Users/branflake2267/.m2/repository/com/google/inject/extensions/guice-assistedinject/3.0/guice-assistedinject-3.0.jar:/Users/branflake2267/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/branflake2267/.m2/repository/org/springframework/spring-context/3.1.2.RELEASE/spring-context-3.1.2.RELEASE.jar:/Users/branflake2267/.m2/repository/net/sourceforge/nekohtml/nekohtml/1.9.15/nekohtml-1.9.15.jar:/Users/branflake2267/.m2/repository/xalan/serializer/2.7.1/serializer-2.7.1.jar:/Users/branflake2267/.m2/repository/org/json/json/20090211/json-20090211.jar:/Users/branflake2267/.m2/repository/com/gwtplatform/gwtp-dispatch-server/1.0-RC-2-SNAPSHOT/gwtp-dispatch-server-1.0-RC-2-SNAPSHOT.jar:/Users/branflake2267/.m2/repository/org/springframework/spring-web/3.1.2.RELEASE/spring-web-3.1.2.RELEASE.jar:/Users/branflake2267/.m2/repository/javax/inject/javax.inject/1/javax.inject-1.jar:/Users/branflake2267/.m2/repository/net/sourceforge/htmlunit/htmlunit/2.9/htmlunit-2.9.jar:/Users/branflake2267/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.0.6/jackson-core-2.0.6.jar:/Users/branflake2267/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.0.6/jackson-databind-2.0.6.jar:/Users/branflake2267/.m2/repository/com/google/gwt/gwt-dev/2.5.0/gwt-dev-2.5.0.jar:/Users/branflake2267/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar:/Users/branflake2267/.m2/repository/xalan/xalan/2.7.1/xalan-2.7.1.jar:/Users/branflake2267/.m2/repository/commons-codec/commons-codec/1.4/commons-codec-1.4.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/Users/branflake2267/git/GWTP/gwtp-build-tools/src/main/java:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-clients-common/src/main/java:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-processors/src/main/java:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-dispatch-shared/src/main/java:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-dispatch-shared/target/generated-sources/apt-test:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-dispatch-client/src/main/java:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-dispatch-server/src/main/java:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-tester/src/main/java:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-mvp-client/src/main/java:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-dispatch-test/src/main/java:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-dispatch-server-guice/src/main/java:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-dispatch-server-spring/src/main/java:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-crawler/src/main/java:/Users/branflake2267/git/GWTP/gwtp-core/gwtp-crawler-service/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2010-2013 <a href="http://arcbees.com">ArcBees</a>. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/branflake2267/git/GWTP/target/site/javadoc/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'GWT-Platform Javadocs'
+-header
+'<a href="https://github.com/ArcBees/GWTP" target="_blank">Back to GWTP Home</a>'
+-link
+'http://download.oracle.com/javase/6/docs/api'
+-link
+'http://google-web-toolkit.googlecode.com/svn/javadoc/latest'
+-link
+'http://static.springsource.org/spring/docs/3.0.x/javadoc-api'
+-link
+'http://google-gin.googlecode.com/svn/trunk/javadoc'
+-link
+'http://google-guice.googlecode.com/svn/trunk/javadoc'
+-link
+'http://aopalliance.sourceforge.net/doc'
+-link
+'https://developers.google.com/appengine/docs/java/javadoc'
+-link
+'http://docs.guava-libraries.googlecode.com/git/javadoc'
+-linkoffline
+'http://docs.oracle.com/javase/6/docs/api' '/Users/branflake2267/git/GWTP/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'GWT-Platform 1.0-RC-2-SNAPSHOT API'
