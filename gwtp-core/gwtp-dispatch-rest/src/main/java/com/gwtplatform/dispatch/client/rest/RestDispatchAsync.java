@@ -35,7 +35,13 @@ import com.gwtplatform.dispatch.shared.SecurityCookieAccessor;
 import com.gwtplatform.dispatch.shared.rest.RestAction;
 
 /**
- * TODO: Documentation.
+ * This class is a REST implementation of {@link DispatchAsync}.
+ * Unlike {@link com.gwtplatform.dispatch.client.RpcDispatchAsync}, it does not generate the server-side implementations
+ * so you have to create your own server REST services.
+ *
+ * In order to use {@link RestDispatchAsync}, your actions must implement Rest implement {@link RestAction}. If you are
+ * using your actions through an auto generated {@link com.gwtplatform.dispatch.shared.rest.RestService},
+ * then you actions already implement <code>RestAction</code>.
  */
 public class RestDispatchAsync extends AbstractDispatchAsync {
     private final RestRequestBuilderFactory requestBuilderFactory;

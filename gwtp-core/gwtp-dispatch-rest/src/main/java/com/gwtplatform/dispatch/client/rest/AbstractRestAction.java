@@ -25,7 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO: Documentation.
+ * Provides a basic implementation of {@link RestAction} to inheritors. This is used by GWTP code-generator to create
+ * the actions defined by the {@link com.gwtplatform.dispatch.shared.rest.RestService}s.
  */
 public abstract class AbstractRestAction<R extends Result> implements RestAction<R> {
     private HttpMethod httpMethod;

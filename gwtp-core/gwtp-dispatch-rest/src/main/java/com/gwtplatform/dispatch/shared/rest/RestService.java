@@ -17,7 +17,13 @@
 package com.gwtplatform.dispatch.shared.rest;
 
 /**
- * TODO: Write javadoc.
+ * Defines {@link RestAction}s to be used with {@link com.gwtplatform.dispatch.client.rest.RestDispatchAsync}. All
+ * interfaces extending {@link RestService} will get their implementation generated, making it possible to inject them
+ * with GIN.
+ * <p/>
+ * Note that all return types must either be {@link com.gwtplatform.dispatch.shared.Action} or {@link RestAction}.
+ * If the return type is {@link com.gwtplatform.dispatch.shared.Action}, the implementation will implement
+ * {@link RestAction}, making the action compatible with {@link com.gwtplatform.dispatch.client.rest.RestDispatchAsync}.
  */
 public interface RestService {
 }

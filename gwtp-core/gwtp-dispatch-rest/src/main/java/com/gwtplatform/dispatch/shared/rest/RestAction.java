@@ -22,7 +22,9 @@ import com.gwtplatform.dispatch.shared.Action;
 import com.gwtplatform.dispatch.shared.Result;
 
 /**
- * TODO: Documentation.
+ * Forces an {@link Action} to implements some methods required by the
+ * {@link com.gwtplatform.dispatch.client.rest.RestDispatchAsync}. Note that if you use the latter, your actions must
+ * implement the {@link RestAction} interface.
  */
 public interface RestAction<R extends Result> extends Action<R> {
     HttpMethod getHttpMethod();

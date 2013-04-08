@@ -19,7 +19,7 @@ package com.gwtplatform.dispatch.client.rest;
 import com.google.gwt.user.client.rpc.SerializationException;
 
 /**
- * TODO: doc.
+ * Used by the {@link RestDispatchAsync} to convert objects to String and String to objects.
  */
 public interface Serializer<T> {
     T deserialize(String value) throws SerializationException;

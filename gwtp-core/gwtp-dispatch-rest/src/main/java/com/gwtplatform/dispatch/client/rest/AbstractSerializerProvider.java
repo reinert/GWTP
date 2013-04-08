@@ -22,7 +22,6 @@ import java.util.Map;
 import com.gwtplatform.dispatch.shared.Action;
 
 public abstract class AbstractSerializerProvider implements SerializerProvider {
-    // TODO: Use a more efficient way to store serializers
     private final Map<SerializerKey, Serializer> serializers = new HashMap<SerializerKey, Serializer>();
 
     @Override

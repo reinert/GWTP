@@ -34,6 +34,11 @@ import com.google.inject.Singleton;
  * Warning: This is still a work in progress and subject to many changes.
  */
 public class RestDispatchAsyncModule extends AbstractDispatchAsyncModule {
+    /**
+     * A {@link RestDispatchAsyncModule} builder. This builder uses the same configuration than
+     * {@link AbstractDispatchAsyncModule} and makes possible to setup specific configuration used by
+     * {@link RestDispatchAsync}.
+     */
     public static class Builder extends AbstractDispatchAsyncModule.Builder {
         protected String applicationPath = "";
 
@@ -42,6 +47,11 @@ public class RestDispatchAsyncModule extends AbstractDispatchAsyncModule {
         public Builder() {
         }
 
+        /**
+         * The base URL used by {@link RestDispatchAsync} to call REST actions.
+         *
+         * @return This {@link Builder} instance.
+         */
         public Builder applicationPath(String applicationPath) {
             this.applicationPath = applicationPath;
             return this;

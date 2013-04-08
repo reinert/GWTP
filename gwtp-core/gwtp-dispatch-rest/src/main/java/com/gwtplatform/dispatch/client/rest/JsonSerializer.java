@@ -36,7 +36,6 @@ public abstract class JsonSerializer<T> implements Serializer<T> {
         try {
             return reader.read(value);
         } catch (JSONException e) {
-            // TODO: Use our own SerializationException
             throw new SerializationException(e);
         }
     }
