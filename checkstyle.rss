@@ -2,20 +2,20 @@
 
 <rss version="0.91">
   <channel>
-    <title>GWTP Dispatch Shared - Checkstyle report</title>
-    <link>http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared</link>
-    <description>GWTP Dispatch Shared - Checkstyle report</description>
+    <title>GWTP Clients common - Checkstyle report</title>
+    <link>http://gwtplatform.com/gwtp-core/gwtp-clients-common</link>
+    <description>GWTP Clients common - Checkstyle report</description>
     <language>en-us</language>
     <copyright>&#169;2010 - 2013 ArcBees</copyright>
     <item>
-      <title>File: 30,
+      <title>File: 5,
              Errors: 0,
              Warnings: 0,
              Infos: 0
       </title>
-            <link>http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html</link>
+            <link>http://gwtplatform.com/gwtp-core/gwtp-clients-common/checkstyle.html</link>
       <description>
-        <p>Click <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html">here</a> for the full Checkstyle report.</p>
+        <p>Click <a href="http://gwtplatform.com/gwtp-core/gwtp-clients-common/checkstyle.html">here</a> for the full Checkstyle report.</p>
 
         <table summary="Files" boder="1">
           <thead>
@@ -29,7 +29,7 @@
           <tbody>
                           <tr>
                 <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.SecurityCookieAccessor.java">com/gwtplatform/dispatch/shared/SecurityCookieAccessor.java</a>
+                  <a href="http://gwtplatform.com/gwtp-core/gwtp-clients-common/checkstyle.html#com.gwtplatform.common.client.IndirectProvider.java">com/gwtplatform/common/client/IndirectProvider.java</a>
                 </td>
                 <td>
                   0
@@ -43,7 +43,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.annotation.FooChanged.java">com/gwtplatform/dispatch/annotation/FooChanged.java</a>
+                  <a href="http://gwtplatform.com/gwtp-core/gwtp-clients-common/checkstyle.html#com.gwtplatform.common.client.CodeSplitProvider.java">com/gwtplatform/common/client/CodeSplitProvider.java</a>
                 </td>
                 <td>
                   0
@@ -57,7 +57,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.SecurityCookie.java">com/gwtplatform/dispatch/shared/SecurityCookie.java</a>
+                  <a href="http://gwtplatform.com/gwtp-core/gwtp-clients-common/checkstyle.html#com.gwtplatform.common.client.StandardProvider.java">com/gwtplatform/common/client/StandardProvider.java</a>
                 </td>
                 <td>
                   0
@@ -71,7 +71,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.annotation.DetailProxy.java">com/gwtplatform/dispatch/annotation/DetailProxy.java</a>
+                  <a href="http://gwtplatform.com/gwtp-core/gwtp-clients-common/checkstyle.html#com.gwtplatform.common.client.ProviderBundle.java">com/gwtplatform/common/client/ProviderBundle.java</a>
                 </td>
                 <td>
                   0
@@ -85,357 +85,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.DispatchServiceAsync.java">com/gwtplatform/dispatch/shared/DispatchServiceAsync.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.Result.java">com/gwtplatform/dispatch/shared/Result.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.annotation.RetrieveFoo.java">com/gwtplatform/dispatch/annotation/RetrieveFoo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.ActionException.java">com/gwtplatform/dispatch/shared/ActionException.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.annotation.RetrieveBar.java">com/gwtplatform/dispatch/annotation/RetrieveBar.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.DispatchRequest.java">com/gwtplatform/dispatch/shared/DispatchRequest.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.annotation.AnnotationProcessingTest.java">com/gwtplatform/dispatch/annotation/AnnotationProcessingTest.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.DispatchAsync.java">com/gwtplatform/dispatch/shared/DispatchAsync.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.DispatchService.java">com/gwtplatform/dispatch/shared/DispatchService.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.UnsupportedActionException.java">com/gwtplatform/dispatch/shared/UnsupportedActionException.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.ServiceException.java">com/gwtplatform/dispatch/shared/ServiceException.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.Action.java">com/gwtplatform/dispatch/shared/Action.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.ActionImpl.java">com/gwtplatform/dispatch/shared/ActionImpl.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.annotation.Address.java">com/gwtplatform/dispatch/annotation/Address.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.annotation.PersonName.java">com/gwtplatform/dispatch/annotation/PersonName.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.annotation.Person.java">com/gwtplatform/dispatch/annotation/Person.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.BatchAction.java">com/gwtplatform/dispatch/shared/BatchAction.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.AbstractUpdateResult.java">com/gwtplatform/dispatch/shared/AbstractUpdateResult.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.BatchResult.java">com/gwtplatform/dispatch/shared/BatchResult.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.annotation.Foo.java">com/gwtplatform/dispatch/annotation/Foo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.UnsecuredActionImpl.java">com/gwtplatform/dispatch/shared/UnsecuredActionImpl.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.annotation.EmployeeLocator.java">com/gwtplatform/dispatch/annotation/EmployeeLocator.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.annotation.Employee.java">com/gwtplatform/dispatch/annotation/Employee.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.annotation.Detail.java">com/gwtplatform/dispatch/annotation/Detail.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.shared.AbstractSimpleResult.java">com/gwtplatform/dispatch/shared/AbstractSimpleResult.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://gwtplatform.com/gwtp-core/gwtp-dispatch-shared/checkstyle.html#com.gwtplatform.dispatch.annotation.HasThing.java">com/gwtplatform/dispatch/annotation/HasThing.java</a>
+                  <a href="http://gwtplatform.com/gwtp-core/gwtp-clients-common/checkstyle.html#com.gwtplatform.common.client.CodeSplitBundleProvider.java">com/gwtplatform/common/client/CodeSplitBundleProvider.java</a>
                 </td>
                 <td>
                   0
