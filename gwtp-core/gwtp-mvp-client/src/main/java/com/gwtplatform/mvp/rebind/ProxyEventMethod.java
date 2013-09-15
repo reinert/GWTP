@@ -18,13 +18,11 @@ package com.gwtplatform.mvp.rebind;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JMethod;
-import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
-import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.*;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.gwtplatform.mvp.client.annotations.ProxyEvent;
+import com.gwtplatform.mvp.client.annotations.Null;
 
 /**
  * Represents a method, in the presenter, that is responsible of handling an event.
@@ -33,6 +31,7 @@ import com.gwtplatform.mvp.client.annotations.ProxyEvent;
  */
 public class ProxyEventMethod {
 
+    private final TypeOracle oracle;
     private final TreeLogger logger;
     private final ClassCollection classCollection;
     private final PresenterInspector presenterInspector;
@@ -41,12 +40,14 @@ public class ProxyEventMethod {
     private String eventTypeName;
     private String handlerTypeName;
     private String handlerMethodName;
+    private Class<?> classParameter;
 
     private ClassInspector eventInspector;
 
-    public ProxyEventMethod(TreeLogger logger,
+    public ProxyEventMethod(TypeOracle oracle, TreeLogger logger,
             ClassCollection classCollection,
             PresenterInspector presenterInspector) {
+        this.oracle = oracle;
         this.logger = logger;
         this.classCollection = classCollection;
         this.presenterInspector = presenterInspector;
@@ -78,6 +79,7 @@ public class ProxyEventMethod {
 
         eventInspector = new ClassInspector(logger, eventType);
         eventTypeName = eventType.getQualifiedSourceName();
+        classParameter = annotation.value();
         ensureStaticGetTypeMethodExists(eventType);
 
         JClassType handlerType = findHandlerType(eventType);
@@ -124,13 +126,54 @@ public class ProxyEventMethod {
 
     private void ensureStaticGetTypeMethodExists(JClassType eventType)
             throws UnableToCompleteException {
-        JMethod getTypeMethod = eventType.findMethod("getType", new JType[0]);
-        if (getTypeMethod == null
-                || !getTypeMethod.isStatic()
-                || getTypeMethod.getParameters().length != 0) {
-            logger.log(TreeLogger.ERROR, getErrorPrefix(eventType.getName())
-                    + ", but this event class does not have a static getType method with no parameters.");
-            throw new UnableToCompleteException();
+
+        JMethod getTypeMethod;
+        if (classParameter != Null.class) {
+            JGenericType genericClass = null;
+            try {
+                // Class<T>
+                genericClass = (JGenericType) oracle.getType(Class.class.getName());
+            } catch (NotFoundException e) {}
+
+            getTypeMethod = eventType.findMethod("getType", new JType[]{genericClass});
+
+            // If getType method with parameter Class was not found, then search for Class<?>
+            if (getTypeMethod == null || !getTypeMethod.isStatic()) {
+                // ?
+                JWildcardType unboundWildcard = oracle.getWildcardType(JWildcardType.BoundType.UNBOUND,
+                        oracle.getJavaLangObject());
+                // Class<?>
+                JParameterizedType unboundClass = oracle.getParameterizedType(genericClass,
+                        new JClassType[]{unboundWildcard});
+                getTypeMethod = eventType.findMethod("getType", new JType[]{unboundClass});
+
+                // If getType with parameter Class<?> was not found then search for no parameter
+                if (getTypeMethod == null || !getTypeMethod.isStatic()) {
+                    getTypeMethod = eventType.findMethod("getType", new JType[0]);
+
+                    if (getTypeMethod == null || !getTypeMethod.isStatic()) {
+                        logger.log(TreeLogger.ERROR, getErrorPrefix(eventType.getName())
+                                + ", but this event class does not have a static getType method with one or zero parameter.");
+                        throw new UnableToCompleteException();
+                    } else {
+                        logger.log(TreeLogger.WARN, getErrorPrefix(eventType.getName())
+                                + ", but the static getType method does not accepts parameters. The parameter specified in @"
+                                + ProxyEvent.class.getSimpleName() + " will be ignored.");
+                        // Reset the classParameter in order to ignore it later
+                        classParameter = Null.class;
+                    }
+                }
+            }
+        } else {
+            getTypeMethod = eventType.findMethod("getType", new JType[0]);
+
+            if (getTypeMethod == null
+                    || !getTypeMethod.isStatic()
+                    || getTypeMethod.getParameters().length != 0) {
+                logger.log(TreeLogger.ERROR, getErrorPrefix(eventType.getName())
+                        + ", but this event class does not have a static getType method with no parameters.");
+                throw new UnableToCompleteException();
+            }
         }
 
         JClassType getTypeReturnType = getTypeMethod.getReturnType().isClassOrInterface();
@@ -144,8 +187,13 @@ public class ProxyEventMethod {
     }
 
     private String getErrorPrefix() {
+        String ending = "";
+        if ( classParameter != Null.class) {
+            ending = ", signed with one class parameter,";
+        }
         return "In presenter " + presenterInspector.getPresenterClassName()
-                + ", method " + functionName + " annotated with @" + ProxyEvent.class.getSimpleName();
+                + ", method " + functionName + " annotated with @" + ProxyEvent.class.getSimpleName()
+                + ending;
     }
 
     private String getErrorPrefix(String eventTypeName) {
@@ -191,7 +239,13 @@ public class ProxyEventMethod {
      * @param writer The {@link SourceWriter}.
      */
     public void writeAddHandler(SourceWriter writer) {
-        writer.println("getEventBus().addHandler( " + eventTypeName + ".getType(), this );");
+        String ending;
+        if (classParameter != Null.class) {
+            ending = classParameter.getCanonicalName() + ".class), this );";
+        } else {
+            ending = "), this );";
+        }
+        writer.println("getEventBus().addHandler( " + eventTypeName + ".getType(" + ending);
     }
 
     /**
