@@ -35,7 +35,7 @@ import java.lang.annotation.Target;
  * <p/>
  * {@code @ProxyEvent} accepts one Class&lt;?&gt; parameter when resorting to generic
  * event handling is necessary. In such cases, your getType static method must be signed
- * with a unbound Class&lt;?&gt; parameter.
+ * with an unbound Class&lt;?&gt; parameter.
  *
  * @author Philippe Beaudoin
  */

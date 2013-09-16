@@ -18,11 +18,19 @@ package com.gwtplatform.mvp.rebind;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.core.ext.typeinfo.*;
+import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JGenericType;
+import com.google.gwt.core.ext.typeinfo.JMethod;
+import com.google.gwt.core.ext.typeinfo.JParameterizedType;
+import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
+import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.JWildcardType;
+import com.google.gwt.core.ext.typeinfo.NotFoundException;
+import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
-import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.Null;
+import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 
 /**
  * Represents a method, in the presenter, that is responsible of handling an event.
@@ -133,7 +141,7 @@ public class ProxyEventMethod {
             try {
                 // Class<T>
                 genericClass = (JGenericType) oracle.getType(Class.class.getName());
-            } catch (NotFoundException e) {}
+            } catch (NotFoundException e) { }
 
             getTypeMethod = eventType.findMethod("getType", new JType[]{genericClass});
 
@@ -187,13 +195,12 @@ public class ProxyEventMethod {
     }
 
     private String getErrorPrefix() {
-        String ending = "";
-        if ( classParameter != Null.class) {
-            ending = ", signed with one class parameter,";
+        String toRet = "In presenter " + presenterInspector.getPresenterClassName()
+                + ", method " + functionName + " annotated with @" + ProxyEvent.class.getSimpleName();
+        if (classParameter != Null.class) {
+            toRet += ", signed with one class parameter,";
         }
-        return "In presenter " + presenterInspector.getPresenterClassName()
-                + ", method " + functionName + " annotated with @" + ProxyEvent.class.getSimpleName()
-                + ending;
+        return toRet;
     }
 
     private String getErrorPrefix(String eventTypeName) {
