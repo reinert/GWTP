@@ -141,7 +141,9 @@ public class ProxyEventMethod {
             try {
                 // Class<T>
                 genericClass = (JGenericType) oracle.getType(Class.class.getName());
-            } catch (NotFoundException e) { }
+            } catch (NotFoundException e) {
+                throw new RuntimeException(e);
+            }
 
             getTypeMethod = eventType.findMethod("getType", new JType[]{genericClass});
 
@@ -161,11 +163,11 @@ public class ProxyEventMethod {
 
                     if (getTypeMethod == null || !getTypeMethod.isStatic()) {
                         logger.log(TreeLogger.ERROR, getErrorPrefix(eventType.getName())
-                                + ", but this event class does not have a static getType method with one or zero parameter.");
+                                + ", but this event class hasn't a static getType method with one or zero parameter.");
                         throw new UnableToCompleteException();
                     } else {
                         logger.log(TreeLogger.WARN, getErrorPrefix(eventType.getName())
-                                + ", but the static getType method does not accepts parameters. The parameter specified in @"
+                                + ", but the static getType method accepts no parameters. The parameter specified in @"
                                 + ProxyEvent.class.getSimpleName() + " will be ignored.");
                         // Reset the classParameter in order to ignore it later
                         classParameter = Null.class;

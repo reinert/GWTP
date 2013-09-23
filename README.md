@@ -1,6 +1,5 @@
 ![GWTP] (http://i.imgur.com/LHvTZ.png "GWTP goo-teepee") *goo-teepee*
 A complete model-view-presenter framework to simplify your next GWT project.
-[![githalytics.com alpha](https://cruel-carlota.gopagoda.com/15d7ccab612aa40bb3af6b0cbcf4fc51 "githalytics.com")](http://githalytics.com/ArcBees/GWTP)
 
 ##Donation
 [![Donate](https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SDCQSKDTWZYCQ)
@@ -80,7 +79,8 @@ A complete model-view-presenter framework to simplify your next GWT project.
 * [Javadocs](http://arcbees.github.com/GWTP/javadoc/apidocs/index.html)
 
 ##Plugins
-* [Eclipse Plugin source](https://github.com/ArcBees/gwtp-eclipse-plugin)
+* [Eclipse Plugin](https://github.com/ArcBees/gwtp-eclipse-plugin) - Create project and presenters
+* [IntelliJ IDEA Plugin](https://github.com/ArcBees/gwtp-idea-plugin) - Create project and presenters
 
 ##Moving From 
 * While we move, you can find the documentation here: http://gwt-platform.googlecode.com
@@ -92,3 +92,5 @@ A complete model-view-presenter framework to simplify your next GWT project.
 [![Arcbees.com](http://arcbees-ads.appspot.com/ad.png)](http://arcbees.com)
 
 [![IntelliJ](https://lh6.googleusercontent.com/--QIIJfKrjSk/UJJ6X-UohII/AAAAAAAAAVM/cOW7EjnH778/s800/banner_IDEA.png)](http://www.jetbrains.com/idea/index.html)
+
+[![githalytics.com alpha](https://cruel-carlota.gopagoda.com/15d7ccab612aa40bb3af6b0cbcf4fc51 "githalytics.com")](http://githalytics.com/ArcBees/GWTP)
