@@ -318,7 +318,7 @@
                         <propertiesLocation>/gwtp-checkstyle.properties</propertiesLocation>
                         <propertyExpansion>basedir=${basedir}</propertyExpansion>
                         <consoleOutput>true</consoleOutput>
-                        <failsOnError>true</failsOnError>
+                        <failsOnError>false</failsOnError>
                         <linkXRef>false</linkXRef>
                         <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     </configuration>
