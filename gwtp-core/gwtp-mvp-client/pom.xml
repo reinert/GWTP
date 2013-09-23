@@ -25,7 +25,29 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav-jackrabbit</artifactId>
+                <version>2.4</version>
+            </extension>
+        </extensions>
+
     </build>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>growbit-snapshot</id>
+            <name>Growbit Snapshot Repository</name>
+            <url>dav:https://repository-growbit.forge.cloudbees.com/snapshot/</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+        <repository>
+            <id>growbit-release</id>
+            <name>Growbit Release Repository</name>
+            <url>dav:https://repository-growbit.forge.cloudbees.com/release/</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
