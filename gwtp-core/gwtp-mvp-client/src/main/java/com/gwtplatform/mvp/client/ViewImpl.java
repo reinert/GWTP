@@ -16,19 +16,20 @@
 
 package com.gwtplatform.mvp.client;
 
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A simple implementation of {@link View} that simply disregard every call to
- * {@link #setInSlot(Object, IsWidget)}, {@link #addToSlot(Object, IsWidget)}, and
- * {@link #removeFromSlot(Object, IsWidget)}.
+ * A simple implementation of {@link com.gwtplatform.mvp.client.View} that simply disregard every call to
+ * {@link #setInSlot(Object, com.google.gwt.user.client.ui.IsWidget)}, {@link #addToSlot(Object, com.google.gwt.user.client.ui.IsWidget)}, and
+ * {@link #removeFromSlot(Object, com.google.gwt.user.client.ui.IsWidget)}.
  * <p/>
  * Feel free not to inherit from this if you need another base class (such as
  * {@link com.google.gwt.user.client.ui.Composite}), but you will have to define
  * the above methods.
  * <p/>
- * * <b>Important</b> call {@link #initWidget(Widget)} in your {@link com.gwtplatform.mvp.client.View}'s
+ * * <b>Important</b> call {@link #initWidget(com.google.gwt.user.client.ui.Widget)} in your {@link View}'s
  * constructor.
  */
 public abstract class ViewImpl implements View {
@@ -49,6 +50,11 @@ public abstract class ViewImpl implements View {
     @Override
     public Widget asWidget() {
         return widget;
+    }
+
+    @Override
+    public void finish() {
+        History.back();
     }
 
     protected void initWidget(Widget widget) {

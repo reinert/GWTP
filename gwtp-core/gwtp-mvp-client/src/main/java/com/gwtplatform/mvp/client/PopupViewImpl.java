@@ -29,8 +29,8 @@ import com.gwtplatform.mvp.client.proxy.NavigationEvent;
 import com.gwtplatform.mvp.client.proxy.NavigationHandler;
 
 /**
- * A simple implementation of {@link PopupView} that can be used when the widget
- * returned by {@link #asWidget()} inherits from {@link PopupPanel}.
+ * A simple implementation of {@link com.gwtplatform.mvp.client.PopupView} that can be used when the widget
+ * returned by {@link #asWidget()} inherits from {@link com.google.gwt.user.client.ui.PopupPanel}.
  * <p/>
  * Also, this implementation simply disregards every call to
  * {@link #setInSlot(Object, com.google.gwt.user.client.ui.IsWidget)}, {@link #addToSlot(Object,
@@ -45,12 +45,12 @@ public abstract class PopupViewImpl extends ViewImpl implements PopupView {
     private final EventBus eventBus;
 
     /**
-     * The {@link PopupViewImpl} class uses the {@link EventBus} to listen to
-     * {@link NavigationEvent} in order to automatically close when this event is
+     * The {@link com.gwtplatform.mvp.client.PopupViewImpl} class uses the {@link com.google.web.bindery.event.shared.EventBus} to listen to
+     * {@link com.gwtplatform.mvp.client.proxy.NavigationEvent} in order to automatically close when this event is
      * fired, if desired. See
      * {@link #setAutoHideOnNavigationEventEnabled(boolean)} for details.
      *
-     * @param eventBus The {@link EventBus}.
+     * @param eventBus The {@link com.google.web.bindery.event.shared.EventBus}.
      */
     protected PopupViewImpl(EventBus eventBus) {
         this.eventBus = eventBus;
@@ -122,10 +122,15 @@ public abstract class PopupViewImpl extends ViewImpl implements PopupView {
         asPopupPanel().show();
     }
 
+    @Override
+    public void finish() {
+        hide();
+    }
+
     /**
-     * Retrieves this view as a {@link PopupPanel}. See {@link #asWidget()}.
+     * Retrieves this view as a {@link com.google.gwt.user.client.ui.PopupPanel}. See {@link #asWidget()}.
      *
-     * @return This view as a {@link PopupPanel} object.
+     * @return This view as a {@link com.google.gwt.user.client.ui.PopupPanel} object.
      */
     protected PopupPanel asPopupPanel() {
         return (PopupPanel) asWidget();

@@ -20,7 +20,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 /**
  * The interface for view classes that handles all the UI-related code for a
- * {@link Presenter}.
+ * {@link com.gwtplatform.mvp.client.Presenter}.
  */
 public interface View extends IsWidget {
 
@@ -29,13 +29,13 @@ public interface View extends IsWidget {
      * <p/>
      * Override the default implementation and manage all the slots of your view
      * into which content can be added. You should also consider overriding
-     * {@link #removeFromSlot(Object, IsWidget)}.
+     * {@link #removeFromSlot(Object, com.google.gwt.user.client.ui.IsWidget)}.
      * If the view doesn't know about this slot, it can silently ignore the request.
      * <p/>
-     * Used by {@link PresenterWidget#addToSlot(Object, PresenterWidget)}.
+     * Used by {@link com.gwtplatform.mvp.client.PresenterWidget#addToSlot(Object, com.gwtplatform.mvp.client.PresenterWidget)}.
      *
      * @param slot    An opaque object indicating the slot to add into.
-     * @param content The content to add, a {@link IsWidget}.
+     * @param content The content to add, a {@link com.google.gwt.user.client.ui.IsWidget}.
      */
     void addToSlot(Object slot, IsWidget content);
 
@@ -44,13 +44,13 @@ public interface View extends IsWidget {
      * <p/>
      * Override the default implementation and manage all the slots of your view
      * into which content can be added and removed. You should also override
-     * {@link #addToSlot(Object, IsWidget)}.
+     * {@link #addToSlot(Object, com.google.gwt.user.client.ui.IsWidget)}.
      * If the view doesn't know about this slot, it can silently ignore the request.
      * <p/>
-     * Used by {@link PresenterWidget#removeFromSlot(Object, PresenterWidget)}.
+     * Used by {@link com.gwtplatform.mvp.client.PresenterWidget#removeFromSlot(Object, com.gwtplatform.mvp.client.PresenterWidget)}.
      *
      * @param slot    An opaque object indicating the slot to remove from.
-     * @param content The content to remove, a {@link IsWidget}.
+     * @param content The content to remove, a {@link com.google.gwt.user.client.ui.IsWidget}.
      */
     void removeFromSlot(Object slot, IsWidget content);
 
@@ -63,12 +63,18 @@ public interface View extends IsWidget {
      * it can silently ignore the request. When {@code null} is passed, your
      * implementation should clear the slot.
      * <p/>
-     * Used by {@link PresenterWidget#setInSlot(Object, PresenterWidget)} and
-     * {@link PresenterWidget#clearSlot(Object)}.
+     * Used by {@link com.gwtplatform.mvp.client.PresenterWidget#setInSlot(Object, com.gwtplatform.mvp.client.PresenterWidget)} and
+     * {@link com.gwtplatform.mvp.client.PresenterWidget#clearSlot(Object)}.
      *
      * @param slot    An opaque object indicating the slot to add into.
-     * @param content The content to add, a {@link IsWidget}. Pass {@code null} to
+     * @param content The content to add, a {@link com.google.gwt.user.client.ui.IsWidget}. Pass {@code null} to
      *                clear the slot entirely.
      */
     void setInSlot(Object slot, IsWidget content);
+
+    /**
+     * Finishes current view's presentation.
+     * Usually this method will hide or dispose current view.
+     */
+    void finish();
 }
