@@ -16,6 +16,9 @@
 
 package com.gwtplatform.mvp.client.proxy;
 
+import com.gwtplatform.mvp.client.Bundle;
+import com.gwtplatform.mvp.client.PresenterWidget;
+
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -41,17 +44,20 @@ import java.util.Set;
  * <li> <code>#user-email;name=j.blogs;type=home</code></li>
  * </ul>
  * The separators (';' and '=') can be modified in
- * {@link com.gwtplatform.mvp.client.proxy.ParameterTokenFormatter}.
+ * {@link ParameterTokenFormatter}.
  */
 public class PlaceRequest {
     private final String nameToken;
     private final Map<String, String> params;
+    private final Bundle bundle;
+    private final PresenterWidget.FinishCallback finishCallback;
+
 
     /**
      * Builds a request without any name token and without parameters. You should
      * typically use {@link #PlaceRequest(String)} and specify the name token.
      * However, this version is acceptable when calling
-     * {@link com.gwtplatform.mvp.client.proxy.Proxy#reveal(com.gwtplatform.mvp.client.proxy.PlaceRequest)}.
+     * {@link Proxy#reveal(PlaceRequest)}.
      */
     public PlaceRequest() {
         this.nameToken = null;
@@ -62,6 +68,8 @@ public class PlaceRequest {
         // parameter-less PlaceRequest and slightly more
         // costly to instantiate PlaceRequest with parameters.
         this.params = null;
+        this.bundle = null;
+        this.finishCallback = null;
     }
 
     /**
@@ -87,6 +95,8 @@ public class PlaceRequest {
         // parameter-less PlaceRequest and slightly more
         // costly to instantiate PlaceRequest with parameters.
         this.params = null;
+        this.bundle = null;
+        this.finishCallback = null;
     }
 
     /**
@@ -95,29 +105,31 @@ public class PlaceRequest {
      * @param nameToken The name token for the request.
      * @param params    Existing parameter map.
      */
-    private PlaceRequest(String nameToken, Map<String, String> params) {
+    private PlaceRequest(String nameToken, Map<String, String> params, Bundle bundle, PresenterWidget.FinishCallback finishCallback) {
         this.nameToken = nameToken;
         this.params = params;
+        this.bundle = bundle;
+        this.finishCallback = finishCallback;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof PlaceRequest) {
-            PlaceRequest req = (PlaceRequest) obj;
-            if (nameToken == null || req.nameToken == null) {
-                return false;
-            }
-            if (!nameToken.equals(req.nameToken)) {
-                return false;
-            }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PlaceRequest)) return false;
 
-            if (params == null) {
-                return req.params == null;
-            } else {
-                return params.equals(req.params);
-            }
-        }
-        return false;
+        PlaceRequest that = (PlaceRequest) o;
+
+        if (nameToken != null ? !nameToken.equals(that.nameToken) : that.nameToken != null) return false;
+        if (params != null ? !params.equals(that.params) : that.params != null) return false;
+        if (bundle != null ? !bundle.equals(that.bundle) : that.bundle != null) return false;
+        if (finishCallback != null ? !finishCallback.equals(that.finishCallback) : that.finishCallback != null)
+            return false;
+
+        return true;
+    }
+
+    public Bundle getBundle() {
+        return bundle;
     }
 
     public String getNameToken() {
@@ -125,7 +137,7 @@ public class PlaceRequest {
     }
 
     /**
-     * Extracts a given parameter from the {@link com.gwtplatform.mvp.client.proxy.PlaceRequest}.
+     * Extracts a given parameter from the {@link PlaceRequest}.
      *
      * @param key          The name of the parameter.
      * @param defaultValue The value returned if the parameter is not found.
@@ -157,19 +169,32 @@ public class PlaceRequest {
         }
     }
 
+    /**
+     * Checks if current PlaceRequest has a Bundle
+     *
+     * @return <code>true</code> if there is a bundle instantiated; <code>false</code> otherwise.
+     */
+    public boolean hasBundle() {
+        return bundle != null;
+    }
+
     @Override
     public int hashCode() {
         if (nameToken == null) {
             throw new RuntimeException(
                     "Cannot compute hashcode of PlaceRequest with a null nameToken");
         }
-        return 11 * (nameToken.hashCode() + (params == null ? 0 : params.hashCode()));
+        int result = nameToken != null ? nameToken.hashCode() : 0;
+        result = 31 * result + (params != null ? params.hashCode() : 0);
+        result = 31 * result + (bundle != null ? bundle.hashCode() : 0);
+        result = 31 * result + (finishCallback != null ? finishCallback.hashCode() : 0);
+        return result;
     }
 
     /**
      * Checks if this place request has the same name token as the one passed in.
      *
-     * @param other The {@link com.gwtplatform.mvp.client.proxy.PlaceRequest} to check against.
+     * @param other The {@link PlaceRequest} to check against.
      * @return <code>true</code> if both requests share the same name token. <code>false</code> otherwise.
      */
     public boolean hasSameNameToken(PlaceRequest other) {
@@ -216,16 +241,22 @@ public class PlaceRequest {
         return b.build();
     }
 
+    PresenterWidget.FinishCallback getFinishCallback() {
+        return finishCallback;
+    }
+
     /**
-     * Class for constructing {@link com.gwtplatform.mvp.client.proxy.PlaceRequest}s. This class supports all currently
-     * existing constructors and the {@link com.gwtplatform.mvp.client.proxy.PlaceRequest#with(String, String)} method.
+     * Class for constructing {@link PlaceRequest}s. This class supports all currently
+     * existing constructors and the {@link PlaceRequest#with(String, String)} method.
      * It is not checked if any of the builder parameters are set when calling the {@link #build()} method as is
-     * currently also possible to construct an empty {@link com.gwtplatform.mvp.client.proxy.PlaceRequest}
-     * (see {@link PlaceRequest#PlaceRequest()})
+     * currently also possible to construct an empty {@link PlaceRequest}
+     * (see {@link com.gwtplatform.mvp.client.proxy.PlaceRequest#PlaceRequest()})
      */
     public static final class Builder {
         private String nameToken;
         private Map<String, String> params;
+        private Bundle bundle;
+        private PresenterWidget.FinishCallback finishCallback;
 
         /**
          * Constructor which will not initialize any internal variables; this should be done by calling either {@link
@@ -240,8 +271,8 @@ public class PlaceRequest {
         }
 
         /**
-         * 'Copy' constructor for initializing a new {@link Builder} with data from an existing
-         * {@link com.gwtplatform.mvp.client.proxy.PlaceRequest}, e.g.
+         * 'Copy' constructor for initializing a new {@link com.gwtplatform.mvp.client.proxy.PlaceRequest.Builder} with data from an existing
+         * {@link PlaceRequest}, e.g.
          * <pre>
          * <code>
          * PlaceRequest request = placeManager.getCurrentPlaceRequest();
@@ -278,6 +309,29 @@ public class PlaceRequest {
             return this;
         }
 
+        /**
+         * Put a bundle to be passed through the request to the target {@link com.gwtplatform.mvp.client.Presenter}.
+         * @param bundle
+         * @return the builder
+         */
+        public Builder with(Bundle bundle) {
+            this.bundle = bundle;
+
+            return this;
+        }
+
+        /**
+         * Registers a finishCallback to be exexcuted on target {@link com.gwtplatform.mvp.client.Presenter}'s
+         * {@link com.gwtplatform.mvp.client.Presenter#finish()}.
+         * @param finishCallback
+         * @return the builder
+         */
+        public Builder with(PresenterWidget.FinishCallback finishCallback) {
+            this.finishCallback = finishCallback;
+
+            return this;
+        }
+
         private void lazyInitializeParamMap() {
             if (this.params == null) {
                 this.params = new LinkedHashMap<String, String>();
@@ -285,7 +339,7 @@ public class PlaceRequest {
         }
 
         public PlaceRequest build() {
-            return new PlaceRequest(nameToken, params);
+            return new PlaceRequest(nameToken, params, bundle, finishCallback);
         }
     }
 }
