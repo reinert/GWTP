@@ -29,12 +29,12 @@ import com.gwtplatform.mvp.client.HasHandlerContainer;
 import com.gwtplatform.mvp.client.Presenter;
 
 /**
- * A useful mixing class to define a {@link Proxy} that is also a {@link Place}.
- * You can usually inherit from the simpler form {@link ProxyPlace}.
+ * A useful mixing class to define a {@link com.gwtplatform.mvp.client.proxy.Proxy} that is also a {@link com.gwtplatform.mvp.client.proxy.Place}.
+ * You can usually inherit from the simpler form {@link com.gwtplatform.mvp.client.proxy.ProxyPlace}.
  * <p/>
  *
  * @param <P>      The Presenter's type.
- * @param <Proxy_> Type of the associated {@link Proxy}.
+ * @param <Proxy_> Type of the associated {@link com.gwtplatform.mvp.client.proxy.Proxy}.
  */
 public class ProxyPlaceAbstract<P extends Presenter<?, ?>, Proxy_ extends Proxy<P>> implements ProxyPlace<P>,
         HasHandlerContainer {
@@ -73,8 +73,8 @@ public class ProxyPlaceAbstract<P extends Presenter<?, ?>, Proxy_ extends Proxy<
     private EventBus eventBus;
 
     /**
-     * Creates a {@link ProxyPlaceAbstract}. That is, the {@link Proxy} of a
-     * {@link Presenter} attached to a {@link Place}. This presenter can be
+     * Creates a {@link com.gwtplatform.mvp.client.proxy.ProxyPlaceAbstract}. That is, the {@link com.gwtplatform.mvp.client.proxy.Proxy} of a
+     * {@link com.gwtplatform.mvp.client.Presenter} attached to a {@link com.gwtplatform.mvp.client.proxy.Place}. This presenter can be
      * invoked by setting a history token that matches its name token in the URL
      * bar.
      */
@@ -179,8 +179,8 @@ public class ProxyPlaceAbstract<P extends Presenter<?, ?>, Proxy_ extends Proxy<
      * used instead of constructor injection, because the latter doesn't work well
      * with GWT generators.
      *
-     * @param placeManager The {@link PlaceManager}.
-     * @param eventBus     The {@link EventBus}.
+     * @param placeManager The {@link com.gwtplatform.mvp.client.proxy.PlaceManager}.
+     * @param eventBus     The {@link com.google.web.bindery.event.shared.EventBus}.
      */
     @Inject
     protected void bind(final PlaceManager placeManager, EventBus eventBus) {
@@ -227,7 +227,7 @@ public class ProxyPlaceAbstract<P extends Presenter<?, ?>, Proxy_ extends Proxy<
      * the handler with {@code null}, but override this method to provide your own
      * title.
      *
-     * @param event The {@link GetPlaceTitleEvent} to invoke once the title is
+     * @param event The {@link com.gwtplatform.mvp.client.proxy.GetPlaceTitleEvent} to invoke once the title is
      *              available.
      */
     protected void getPlaceTitle(GetPlaceTitleEvent event) {
@@ -271,6 +271,9 @@ public class ProxyPlaceAbstract<P extends Presenter<?, ?>, Proxy_ extends Proxy<
                     @Override
                     public void execute() {
                         PlaceRequest originalRequest = placeManager.getCurrentPlaceRequest();
+                        // Automatically bind the FinishCallback passed within the PlaceRequest to the revealing
+                        // Presenter.
+                        presenter.setFinishCallback(originalRequest.getFinishCallback());
                         presenter.prepareFromRequest(request);
                         if (originalRequest == placeManager.getCurrentPlaceRequest()) {
                             // User did not manually update place request in prepareFromRequest, update it here.
@@ -317,7 +320,7 @@ public class ProxyPlaceAbstract<P extends Presenter<?, ?>, Proxy_ extends Proxy<
      * This method allows unit test to handle deferred command with a mechanism that doesn't
      * require a GWTTestCase.
      *
-     * @param command The {@link Command} to defer, see {@link com.google.gwt.core.client.Scheduler.ScheduledCommand}.
+     * @param command The {@link com.google.gwt.user.client.Command} to defer, see {@link com.google.gwt.core.client.Scheduler.ScheduledCommand}.
      */
     void addDeferredCommand(Command command) {
         Scheduler.get().scheduleDeferred(command);
