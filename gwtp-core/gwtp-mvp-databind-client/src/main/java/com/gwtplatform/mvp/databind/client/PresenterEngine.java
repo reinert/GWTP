@@ -9,7 +9,6 @@ import com.gwtplatform.mvp.databind.client.property.ProvidesValue;
 import com.gwtplatform.mvp.databind.client.validation.Validation;
 import com.gwtplatform.mvp.databind.client.validation.Validator;
 
-import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -138,7 +137,9 @@ public class PresenterEngine<T> implements PropertyBinder<T>, Iterable<String> {
 
     public Validation isValueValid(String id, T data, Object value) {
         Holder holder = holderMap.get(id);
-        if (holder != null && holder.validatesValue != null) return holder.validatesValue.validate(data, value);
+        if (holder != null && holder.validatesValue != null) {
+            return holder.validatesValue.validate(data, unformat(id, value));
+        }
         return Validation.valid();
     }
 
@@ -192,7 +193,7 @@ public class PresenterEngine<T> implements PropertyBinder<T>, Iterable<String> {
     }
 
     /**
-     * Returns an iterator over a set of elements of type T.
+     * Returns an iterator over bound properties' ids.
      *
      * @return an Iterator.
      */
@@ -204,5 +205,13 @@ public class PresenterEngine<T> implements PropertyBinder<T>, Iterable<String> {
     @Override
     public boolean unbind(String id) {
         return holderMap.remove(id) != null;
+    }
+
+    private Object unformat(String id, Object formattedValue) {
+        Holder holder = holderMap.get(id);
+        if (holder != null && holder.formatter != null) {
+            return holder.formatter.unformat(formattedValue);
+        }
+        return formattedValue;
     }
 }
