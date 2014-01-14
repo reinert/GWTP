@@ -14,6 +14,7 @@
 
     <modules>
         <module>gwtp-mvp-client</module>
+        <module>gwtp-mvp-databind-client</module>
         <module>gwtp-clients-common</module>
         <module>gwtp-dispatch-common-client</module>
         <module>gwtp-dispatch-common-shared</module>
