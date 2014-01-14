@@ -136,51 +136,41 @@ public class PresenterEngine<T> implements PropertyBinder<T>, Iterable<String> {
         return BinderHandlerRegistration.of(this, id);
     }
 
-    public Validation isValueValid(String id, @Nullable T data, Object value) {
-        if (data != null) {
-            Holder holder = holderMap.get(id);
-            if (holder != null && holder.validatesValue != null) return holder.validatesValue.validate(data, value);
-        }
+    public Validation isValueValid(String id, T data, Object value) {
+        Holder holder = holderMap.get(id);
+        if (holder != null && holder.validatesValue != null) return holder.validatesValue.validate(data, value);
         return Validation.valid();
     }
 
-    public Object getValue(String id, @Nullable T data) {
-        if (data != null) {
-            Holder holder = holderMap.get(id);
-            if (holder != null) return holder.propertyAccessor.getValue(data);
-        }
+    public Object getRawValue(String id, T data) {
+        Holder holder = holderMap.get(id);
+        if (holder != null) return holder.propertyAccessor.getValue(data);
         return null;
     }
 
-    public Object getFormattedValue(String id, @Nullable T data) {
-        if (data != null) {
-            Holder holder = holderMap.get(id);
-            if (holder != null) {
-                if (holder.formatter != null) {
-                    return holder.formatter.format(holder.propertyAccessor.getValue(data));
-                }
-                return holder.propertyAccessor.getValue(data);
+    public Object getFormattedValue(String id, T data) {
+        Holder holder = holderMap.get(id);
+        if (holder != null) {
+            if (holder.formatter != null) {
+                return holder.formatter.format(holder.propertyAccessor.getValue(data));
             }
+            return holder.propertyAccessor.getValue(data);
         }
         return null;
     }
 
-    public void setValue(String id, @Nullable T data, Object value) {
-        if (data != null) {
-            Holder holder = holderMap.get(id);
-            if (holder != null) holder.propertyAccessor.setValue(data, value);
-        }
+    public void setRawValue(String id, T data, Object value) {
+        Holder holder = holderMap.get(id);
+        if (holder != null) holder.propertyAccessor.setValue(data, value);
     }
 
-    public void setFormattedValue(String id, @Nullable T data, Object value) {
-        if (data != null) {
-            Holder holder = holderMap.get(id);
-            if (holder != null) {
-                if (holder.formatter != null) {
-                    holder.propertyAccessor.setValue(data, holder.formatter.unformat(value));
-                } else {
-                    holder.propertyAccessor.setValue(data, value);
-                }
+    public void setFormattedValue(String id, T data, Object value) {
+        Holder holder = holderMap.get(id);
+        if (holder != null) {
+            if (holder.formatter != null) {
+                holder.propertyAccessor.setValue(data, holder.formatter.unformat(value));
+            } else {
+                holder.propertyAccessor.setValue(data, value);
             }
         }
     }
