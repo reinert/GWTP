@@ -5,7 +5,7 @@ package com.gwtplatform.mvp.databind.client.format;
  */
 public interface FormatHandler {
 
-    <MODEL, VIEW> VIEW formatValue(String id, MODEL value);
+    <MODEL, VIEW> VIEW formatValue(MODEL value);
 
-    <MODEL, VIEW> MODEL unformatValue(String id, VIEW value);
+    <MODEL, VIEW> MODEL unformatValue(VIEW value);
 }
