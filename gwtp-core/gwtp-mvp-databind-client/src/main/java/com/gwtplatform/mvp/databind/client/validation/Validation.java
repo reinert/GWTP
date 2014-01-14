@@ -1,5 +1,7 @@
 package com.gwtplatform.mvp.databind.client.validation;
 
+import javax.annotation.Nullable;
+
 /**
  * Created at 09/09/13 02:04
  *
@@ -7,8 +9,8 @@ package com.gwtplatform.mvp.databind.client.validation;
  */
 public class Validation {
 
-    private static Validation defaultInvalid = new Validation(false, null);
-    private static Validation defaultValid = new Validation(true, null);
+    protected static Validation defaultInvalid = new Validation(false, null);
+    protected static Validation defaultValid = new Validation(true, null);
 
     public static Validation invalid() {
         return defaultInvalid;
@@ -29,7 +31,7 @@ public class Validation {
     private final boolean valid;
     private final ValidationMessage validationMessage;
 
-    protected Validation(boolean valid, ValidationMessage validationMessage) {
+    protected Validation(boolean valid, @Nullable ValidationMessage validationMessage) {
         this.valid = valid;
         this.validationMessage = validationMessage;
     }
@@ -38,6 +40,7 @@ public class Validation {
         return valid;
     }
 
+    @Nullable
     public ValidationMessage getValidationMessage() {
         return validationMessage;
     }
