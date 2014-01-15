@@ -4,16 +4,18 @@ package com.gwtplatform.mvp.databind.client;
 import com.gwtplatform.mvp.client.UiHandlers;
 
 /**
+ * An interface that must be implemented by any {@link com.gwtplatform.mvp.client.PresenterWidget}
+ * which should support Databinding.
+ *
  * @author Danilo Reinert
  */
 public interface DatabindUiHandlers extends UiHandlers {
 
     /**
-     * Should be called by View when some bound widget has changed value.
+     * Must be called by View when some bound widget changes value.
      *
      * @param id property id
-     * @param value new value from view (may need to be unformatted)
-     * @return
+     * @param value new value from view (may need unformatting)
      */
-    boolean onValueChanged(String id, Object value);
+    void onValueChanged(String id, Object value);
 }
