@@ -25,17 +25,20 @@ public class WidgetEngine implements WidgetBinder {
 
     public <F> HandlerRegistration bindWidget(final String id, final HasValue<F> widget) {
         assert (widget instanceof Widget) : "HasValue parameter must be of type Widget";
-        Widget w = (Widget) widget;
-        w.getElement().setId(id);
-        //TODO: Deal possible memory leak by binding the same id more than once
-        // and losing previous HandlerRegistrations references
+
+        // Add change handler to widget
+        // TODO: Possible memory leak by binding same id many times, losing previous handler references
         HandlerRegistration handlerRegistration = addChangeHandlerToBoundWidget(id, widget);
+
+        // Bind widget
         ensureMap().put(id, widget);
         return BinderHandlerRegistration.of(this, id, handlerRegistration);
     }
 
     public <F> HandlerRegistration bindReadOnlyWidget(final String id, final TakesValue<F> widget) {
         assert (widget instanceof Widget) : "TakesValue parameter must be of type Widget";
+
+        // Bind widget
         ensureMap().put(id, widget);
         return BinderHandlerRegistration.of(this, id);
     }
@@ -43,8 +46,12 @@ public class WidgetEngine implements WidgetBinder {
     @Override
     public boolean unbind(String id) {
         if (widgetMap == null) return false;
+
         final boolean result = widgetMap.remove(id) != null;
+
+        // Destroy map if no bindings exists anymore
         if (widgetMap.isEmpty()) widgetMap = null;
+
         return result;
     }
 
@@ -59,7 +66,6 @@ public class WidgetEngine implements WidgetBinder {
     }
 
     private Map<String, TakesValue> ensureMap() {
-        return widgetMap = widgetMap != null ?
-                widgetMap : new HashMap<String, TakesValue>();
+        return widgetMap = widgetMap != null ? widgetMap : new HashMap<String, TakesValue>();
     }
 }
