@@ -84,11 +84,11 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     }
 
     public Object getValue(String id, T model) {
-        return engine.getValue(id, model);
+        return engine.getRawValue(id, model);
     }
 
     public void setValue(String id, T model, Object value) {
-        engine.setValue(id, model, value);
+        engine.setRawValue(id, model, value);
     }
 
     public PropertyAccessor<T, ?> getPropertyAccessor(String id) {
@@ -112,60 +112,74 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
         return engine.iterator();
     }
 
+    /**
+     * Get all values from view, apply to the model and return if all of them was valid.
+     *
+     * @return {@code true} if all values were valid, {@code false} otherwise
+     */
     public boolean flush() {
         boolean isValid = true;
         for (String id : engine) {
-            Object value = view.getValue(id);
-            // MUST PASS THROUGH VALIDATION ALWAYS
-            if (!onValueChanged(id, value))
-                isValid = false;
+            isValid = doFlush(id);
         }
         return isValid;
     }
 
+    /**
+     * Get value from view, apply to the model and return if it was not invalid.
+     *
+     * @param id identification of the property
+     * @return {@code false} if it was invalid, {@code true} otherwise
+     */
     public boolean flush(String id) {
-        boolean isValid = true;
         if (engine.hasProperty(id)) {
-            Object value = view.getValue(id);
-            if (value != null && !value.equals(engine.getValue(id, model)))
-                if (!onValueChanged(id, value))
-                    isValid = false;
-        }
-        return isValid;
+            return doFlush(id);
+        } // Id not bound, then the value was not invalid
+        return true;
     }
 
     public void refresh() {
         for (String id : engine) {
-            if (engine.isAutoBind(id)) {
-                setValueToView(id);
-            }
+            setValueToView(id);
         }
     }
 
-    public void forceRefresh(String id) {
+    public void refresh(String id) {
         if (engine.hasProperty(id)) {
             setValueToView(id);
         }
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public boolean onValueChanged(String id, Object value) {
-        boolean isValid = true;
-        final Validation validation = engine.isValueValid(id, model, value);
-        if (validation.isValid()) {
-            engine.setValue(id, model, value);
-            if (model != null) view.onValidValue(id, model, value, validation.getValidationMessage());
-        } else {
-            isValid = false;
-            view.onInvalidValue(id, model, value, validation.getValidationMessage());
-        }
-        return isValid;
+    public void onValueChanged(String id, Object value) {
+        setValueToModel(id, value);
     }
 
-    public void setModel(T model) {
-        this.model = model;
-        refresh();
+    /**
+     * Validate and apply a value to a property and return if it was successfully set.
+     * When the model is *null*, no value is set and {@code false} is returned.
+     *
+     * @param id identification of the property
+     * @param value value to be applied
+     * @return {@code true} if the value was validated and applied, {@code false} otherwise
+     */
+    @SuppressWarnings("unchecked")
+    private boolean setValueToModel(String id, Object value) {
+        if (model == null) return false;
+
+        // First, validate the value
+        final Validation validation = engine.isValueValid(id, model, value);
+        if (validation.isValid()) {
+            // If valid, then set to the model and fire valid value event
+            engine.setFormattedValue(id, model, value);
+            view.onValidValue(id, model, value, validation.getValidationMessage());
+            return true;
+        } else {
+            // It must be executed only when a validation occurs and it returns invalid
+            view.onInvalidValue(id, model, value, validation.getValidationMessage());
+        }
+
+        return false;
     }
 
     public T getModel() {
@@ -176,16 +190,42 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
         return view;
     }
 
-    private void setValueToView(String id) {
-        if (model != null) {
-            view.setValue(id, engine.getValue(id, model));
-        } else {
-            view.setValue(id, null);
-        }
+    public void setModel(T model) {
+        this.model = model;
+        refresh();
     }
 
     @Override
     public boolean unbind(String id) {
         return engine.unbind(id);
+    }
+
+    private boolean doFlush(String id) {
+        Object formattedValue = view.getValue(id);
+        if (formattedValue != null && engine.isValueDifferent(id, formattedValue)) {
+            // Value differs from current
+            if (!setValueToModel(id, formattedValue)) {
+                // Could not set a different value to model, then it was invalid
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void refreshAuto() {
+        for (String id : engine) {
+            if (engine.isAutoBind(id)) {
+                setValueToView(id);
+            }
+        }
+    }
+
+    private void setValueToView(String id) {
+        if (model != null) {
+            view.setValue(id, engine.getFormattedValue(id, model));
+        } else {
+            // TODO: is this really necessary?
+            view.setValue(id, null);
+        }
     }
 }

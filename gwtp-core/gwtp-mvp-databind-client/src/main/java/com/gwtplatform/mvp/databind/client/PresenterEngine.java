@@ -207,11 +207,34 @@ public class PresenterEngine<T> implements PropertyBinder<T>, Iterable<String> {
         return holderMap.remove(id) != null;
     }
 
-    private Object unformat(String id, Object formattedValue) {
+    public Object unformat(String id, Object formattedValue) {
         Holder holder = holderMap.get(id);
         if (holder != null && holder.formatter != null) {
             return holder.formatter.unformat(formattedValue);
         }
         return formattedValue;
+    }
+
+    boolean isValueDifferent(String id, Object formattedValue) {
+        Holder holder = holderMap.get(id);
+        if (holder != null) {
+            final Object value = holder.propertyAccessor.getValue(id);
+            Object unformatedValue = formattedValue;
+            if (holder.formatter != null) {
+                unformatedValue = holder.formatter.unformat(formattedValue);
+            }
+
+            // If both are null then they are not different
+            if (value == null && unformatedValue == null) {
+                return false;
+            }
+
+            // Avoid NPE
+            if (value != null) {
+                return !value.equals(unformatedValue);
+            }
+        }
+        // We cannot tell they are different because this id is not bound
+        return false;
     }
 }
