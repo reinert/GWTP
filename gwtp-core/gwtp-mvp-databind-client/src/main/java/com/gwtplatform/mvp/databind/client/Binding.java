@@ -12,6 +12,9 @@ import com.gwtplatform.mvp.databind.client.validation.Validator;
 import java.util.Iterator;
 
 /**
+ * Manager responsible for binding property accessors, validators and formatters to model properties.
+ * It updates these values while the user interacts with the view.
+ *
  * @author Danilo Reinert
  */
 public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterable<String> {
@@ -49,6 +52,7 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
         return engine.bindProperty(id, propertyAccessor, validatesValue, formatter);
     }
 
+    @Override
     public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor, Validator<T, F> validatesValue) {
         return engine.bindProperty(id, propertyAccessor, validatesValue);
     }
@@ -63,42 +67,86 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
         return engine.bindProperty(id, providesValue, readFormatter);
     }
 
+    @Override
     public <F> HandlerRegistration bindProperty(String id, ProvidesValue<T, F> providesValue) {
         return engine.bindProperty(id, providesValue);
     }
 
+    @Override
     public <F> HandlerRegistration bindProperty(boolean autoBind, String id, ProvidesValue<T, F> providesValue) {
         return engine.bindProperty(autoBind, id, providesValue);
     }
 
+    @Override
     public <F> HandlerRegistration bindProperty(boolean autoBind, String id, PropertyAccessor<T, F> propertyAccessor) {
         return engine.bindProperty(autoBind, id, propertyAccessor);
     }
 
+    @Override
     public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor) {
         return engine.bindProperty(id, propertyAccessor);
     }
 
+    /**
+     * Tells whether the specified value can be set to the property of the model.
+     *
+     * @param id identification of the property
+     * @param model model object
+     * @param value value to be validated
+     * @return validation
+     */
     public Validation isValueValid(String id, T model, Object value) {
         return engine.isValueValid(id, model, value);
     }
 
+    /**
+     * Get property's value from model.
+     *
+     * @param id identification of the property
+     * @param model model object
+     * @return value retrieved from model's property
+     */
     public Object getValue(String id, T model) {
         return engine.getRawValue(id, model);
     }
 
+    /**
+     * Set value to model's property.
+     *
+     * @param id identification of the property
+     * @param model model object
+     * @param value value to be applied
+     */
     public void setValue(String id, T model, Object value) {
         engine.setRawValue(id, model, value);
     }
 
+    /**
+     * Get property accessor from specified property.
+     *
+     * @param id identification of the property
+     * @return property accessor
+     */
     public PropertyAccessor<T, ?> getPropertyAccessor(String id) {
         return engine.getPropertyAccessor(id);
     }
 
-    public Validator<T, ?> getValidatesValue(String id) {
+    /**
+     * Get validator from specified property.
+     *
+     * @param id identification of the property
+     * @return validator
+     */
+    public Validator<T, ?> getValidator(String id) {
         return engine.getValidatesValue(id);
     }
 
+    /**
+     * Informs if the property should be automatically sent to view when updating model.
+     *
+     * @param id identification of the property
+     * @return {@code true} if property is set to view by updating the model, {@code false} otherwise
+     */
     public boolean isAutoBind(String id) {
         return engine.isAutoBind(id);
     }
@@ -113,7 +161,7 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     }
 
     /**
-     * Get all values from view, apply to the model and return if all of them was valid.
+     * Get all values from view, apply to the model and return if all of them were valid.
      *
      * @return {@code true} if all values were valid, {@code false} otherwise
      */
@@ -138,12 +186,20 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
         return true;
     }
 
+    /**
+     * Send all properties' values to view.
+     */
     public void refresh() {
         for (String id : engine) {
             setValueToView(id);
         }
     }
 
+    /**
+     * Send specified property's value to view.
+     *
+     * @param id identification of the property
+     */
     public void refresh(String id) {
         if (engine.hasProperty(id)) {
             setValueToView(id);
@@ -182,14 +238,29 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
         return false;
     }
 
+    /**
+     * Get the bound model.
+     *
+     * @return model object
+     */
     public T getModel() {
         return model;
     }
 
+    /**
+     * Get the bound view.
+     *
+     * @return view
+     */
     public DatabindView getView() {
         return view;
     }
 
+    /**
+     * Set a model to this databinding and send all auto bound properties to view.
+     *
+     * @param model model object
+     */
     public void setModel(T model) {
         this.model = model;
         refresh();
