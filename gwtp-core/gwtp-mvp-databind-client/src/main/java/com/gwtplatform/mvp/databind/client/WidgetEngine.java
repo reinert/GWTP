@@ -17,6 +17,7 @@ import java.util.Map;
 public class WidgetEngine implements WidgetBinder {
 
     private DatabindUiHandlers uiHandlers;
+    //TODO: substitute map by a simple javascript object to increase performance
     private Map<String, TakesValue> widgetMap;
 
     public WidgetEngine(DatabindUiHandlers uiHandlers) {

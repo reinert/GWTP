@@ -9,8 +9,8 @@ import com.gwtplatform.mvp.databind.client.property.ProvidesValue;
 import com.gwtplatform.mvp.databind.client.validation.Validation;
 import com.gwtplatform.mvp.databind.client.validation.Validator;
 
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -46,7 +46,8 @@ public class PresenterEngine<T> implements PropertyBinder<T>, Iterable<String> {
         }
     }
 
-    private final Map<String, Holder> holderMap = new LinkedHashMap<String, Holder>();
+    //TODO: substitute map by a simple javascript object to increase performance
+    private final Map<String, Holder> holderMap = new HashMap<String, Holder>();
 
     public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor) {
         return bindProperty(id, propertyAccessor, null, null);

@@ -42,6 +42,7 @@ public class DatabindViewEngine implements ValidationHandlerBinder, DatabindVali
         }
     }
 
+    //TODO: substitute map by a simple javascript object to increase performance
     private final Map<String, Holder> holderMap = new LinkedHashMap<String, Holder>();
     private DatabindUiHandlers uiHandlers;
 
