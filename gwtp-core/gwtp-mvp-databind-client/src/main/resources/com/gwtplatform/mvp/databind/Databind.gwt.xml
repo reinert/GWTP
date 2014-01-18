@@ -2,5 +2,5 @@
 <module>
     <inherits name='com.gwtplatform.mvp.Mvp'/>
 
-    <source path='client'/>
+    <source path='client' excludes="**/*Test.java,**/*TestSuite.java,**/*TestUtil.java"/>
 </module>
