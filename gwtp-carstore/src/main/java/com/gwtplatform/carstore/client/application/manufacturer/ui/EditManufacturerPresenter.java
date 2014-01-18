@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.carstore.client.application.event.DisplayMessageEvent;
 import com.gwtplatform.carstore.client.application.manufacturer.event.ManufacturerAddedEvent;
+import com.gwtplatform.carstore.client.application.manufacturer.properties.ManufacturerDtoProperties;
 import com.gwtplatform.carstore.client.application.manufacturer.ui.EditManufacturerPresenter.MyView;
 import com.gwtplatform.carstore.client.application.widget.message.Message;
 import com.gwtplatform.carstore.client.application.widget.message.MessageStyle;
@@ -29,21 +30,21 @@ import com.gwtplatform.carstore.client.rest.ManufacturerService;
 import com.gwtplatform.carstore.client.util.ErrorHandlerAsyncCallback;
 import com.gwtplatform.carstore.shared.dto.ManufacturerDto;
 import com.gwtplatform.dispatch.rest.shared.RestDispatch;
-import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.PopupView;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.proxy.RevealRootPopupContentEvent;
+import com.gwtplatform.mvp.databind.client.Binding;
+import com.gwtplatform.mvp.databind.client.DatabindView;
 
 public class EditManufacturerPresenter extends PresenterWidget<MyView> implements EditManufacturerUiHandlers {
-    public interface MyView extends PopupView, HasUiHandlers<EditManufacturerUiHandlers> {
-        void edit(ManufacturerDto manufacturerDto);
+
+    public interface MyView extends PopupView, DatabindView<EditManufacturerUiHandlers> {
     }
 
     private final RestDispatch dispatcher;
     private final ManufacturerService manufacturerService;
     private final EditManufacturerMessages messages;
-
-    private ManufacturerDto manufacturerDto;
+    private final Binding<ManufacturerDto> binding;
 
     @Inject
     public EditManufacturerPresenter(EventBus eventBus,
@@ -56,13 +57,13 @@ public class EditManufacturerPresenter extends PresenterWidget<MyView> implement
         this.dispatcher = dispatcher;
         this.manufacturerService = manufacturerService;
         this.messages = messages;
+        this.binding = new Binding<ManufacturerDto>(view);
 
         getView().setUiHandlers(this);
     }
 
-    @Override
     public void createNew() {
-        manufacturerDto = new ManufacturerDto();
+        binding.setModel(new ManufacturerDto());
 
         reveal();
     }
@@ -72,16 +73,15 @@ public class EditManufacturerPresenter extends PresenterWidget<MyView> implement
         getView().hide();
     }
 
-    @Override
     public void edit(ManufacturerDto manufacturerDto) {
-        this.manufacturerDto = manufacturerDto;
+        binding.setModel(manufacturerDto);
 
         reveal();
     }
 
     @Override
-    public void onSave(ManufacturerDto manufacturerDto) {
-        dispatcher.execute(manufacturerService.saveOrCreate(manufacturerDto),
+    public void onSave() {
+        dispatcher.execute(manufacturerService.saveOrCreate(binding.getModel()),
                 new ErrorHandlerAsyncCallback<ManufacturerDto>(this) {
                     @Override
                     public void onSuccess(ManufacturerDto savedManufacturer) {
@@ -94,9 +94,19 @@ public class EditManufacturerPresenter extends PresenterWidget<MyView> implement
                 });
     }
 
-    private void reveal() {
-        getView().edit(manufacturerDto);
+    @Override
+    public void onValueChanged(String id, Object value) {
+        binding.onValueChanged(id, value);
+    }
 
+    @Override
+    protected void onBind() {
+        super.onBind();
+
+        registerHandler(binding.bindProperty("name", ManufacturerDtoProperties.NAME));
+    }
+
+    private void reveal() {
         RevealRootPopupContentEvent.fire(this, this);
     }
 }

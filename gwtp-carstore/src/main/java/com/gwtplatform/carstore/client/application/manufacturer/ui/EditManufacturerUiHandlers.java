@@ -16,15 +16,10 @@
 
 package com.gwtplatform.carstore.client.application.manufacturer.ui;
 
-import com.gwtplatform.carstore.shared.dto.ManufacturerDto;
-import com.gwtplatform.mvp.client.UiHandlers;
+import com.gwtplatform.mvp.databind.client.DatabindUiHandlers;
 
-public interface EditManufacturerUiHandlers extends UiHandlers {
-    void createNew();
-
-    void edit(ManufacturerDto manufacturerDto);
-
-    void onSave(ManufacturerDto manufacturerDto);
+public interface EditManufacturerUiHandlers extends DatabindUiHandlers {
+    void onSave();
 
     void onCancel();
 }
