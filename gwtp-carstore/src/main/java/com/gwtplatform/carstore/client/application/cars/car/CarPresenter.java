@@ -105,13 +105,8 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
         this.propertiesBinding = new Binding<CarPropertiesDto>(view);
 
         //TODO: support nesting bindings
-        if (carDto != null) {
-            binding.setModel(carDto);
-            propertiesBinding.setModel(carDto.getCarProperties());
-        } else {
-            binding.setModel(new CarDto());
-            propertiesBinding.setModel(new CarPropertiesDto());
-        }
+        carDto = carDto != null ? carDto : new CarDto();
+        setCarDto(carDto);
 
         getView().setUiHandlers(this);
     }
@@ -148,7 +143,8 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
         // Ensure #propertiesBinding merged to #binding.
         // When View call #onSave, the values were already flushed, but we need to manually merge the two bindings.
         // Later, with nested binding support, it won't be necessary.
-        mergeBindings();
+        // UPDATE: Not necessary if #propertiesBinding.model references #binding.model.carProperties
+        //mergeBindings();
 
         final CarDto carDto = binding.getModel();
         dispatcher.execute(carService.saveOrCreate(carDto), new ErrorHandlerAsyncCallback<CarDto>(this) {
@@ -179,12 +175,6 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
         return true;
     }
 
-    /**
-     * Must be called by View when some bound widget changes value.
-     *
-     * @param id    property id
-     * @param value new value from view (may need unformatting)
-     */
     @Override
     public void onValueChanged(String id, Object value) {
         //TODO: create BindingManager?
@@ -240,20 +230,21 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
         //TODO: support nesting bindings
         propertiesBinding.flush();
         binding.flush();
-        mergeBindings();
+        //mergeBindings();
     }
 
-    private void mergeBindings() {
-        binding.getModel().setCarProperties(propertiesBinding.getModel());
-    }
+    // Not necessary if #propertiesBinding.model references #binding.model.carProperties
+//    private void mergeBindings() {
+//        binding.getModel().setCarProperties(propertiesBinding.getModel());
+//    }
 
     private void onCarSaved(CarDto oldCar, CarDto newCar) {
         DisplayMessageEvent.fire(CarPresenter.this, new Message(messages.carSaved(), MessageStyle.SUCCESS));
         CarAddedEvent.fire(CarPresenter.this, newCar, oldCar.getId() == null);
 
         if (oldCar.getId() == null) {
-            binding.setModel(new CarDto());
-            propertiesBinding.setModel(new CarPropertiesDto());
+            final CarDto carDto = new CarDto();
+            setCarDto(carDto);
 
             MyProxy proxy = carProxyFactory.create(newCar, newCar.getManufacturer().getName() + newCar.getModel());
 
@@ -277,5 +268,12 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
     private void refresh() {
         binding.refresh();
         propertiesBinding.refresh();
+    }
+
+    private void setCarDto(CarDto carDto) {
+        binding.setModel(carDto);
+        // #binding.model.carProperties will always be updated since it references #propertiesBinding.model
+        // which ensures the updated state.
+        propertiesBinding.setModel(carDto.getCarProperties());
     }
 }
