@@ -16,29 +16,24 @@
 
 package com.gwtplatform.carstore.client.application.cars.car;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
-import com.google.gwt.editor.client.Editor;
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.DateBox;
 import com.gwtplatform.carstore.client.application.cars.car.CarPresenter.MyView;
-import com.gwtplatform.carstore.client.application.cars.car.widget.CarPropertiesEditor;
 import com.gwtplatform.carstore.client.application.manufacturer.ui.ManufacturerRenderer;
-import com.gwtplatform.carstore.shared.dto.CarDto;
 import com.gwtplatform.carstore.shared.dto.ManufacturerDto;
-import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.gwtplatform.mvp.databind.client.DatabindViewImpl;
 
-public class CarMobileView extends ViewWithUiHandlers<CarUiHandlers> implements MyView, Editor<CarDto> {
+import javax.inject.Inject;
+import java.util.List;
+
+public class CarMobileView extends DatabindViewImpl<CarUiHandlers> implements MyView {
+
     interface Binder extends UiBinder<Widget, CarMobileView> {
-    }
-
-    interface Driver extends SimpleBeanEditorDriver<CarDto, CarMobileView> {
     }
 
     @UiField
@@ -46,45 +41,33 @@ public class CarMobileView extends ViewWithUiHandlers<CarUiHandlers> implements 
     @UiField(provided = true)
     ValueListBox<ManufacturerDto> manufacturer;
     @UiField
-    CarPropertiesEditor carProperties;
-
-    private final Driver driver;
+    TextBox someString;
+    @UiField
+    IntegerBox someNumber;
+    @UiField
+    DateBox someDate;
 
     @Inject
-    CarMobileView(Binder uiBinder,
-                  Driver driver) {
+    CarMobileView(Binder uiBinder) {
         manufacturer = new ValueListBox<ManufacturerDto>(new ManufacturerRenderer());
-        this.driver = driver;
 
         initWidget(uiBinder.createAndBindUi(this));
 
-        driver.initialize(this);
-
         model.getElement().setAttribute("placeholder", "Model");
-    }
+        someString.getElement().setAttribute("placeholder", "Property #1");
+        someNumber.getElement().setAttribute("placeholder", "Property #2");
+        someDate.getElement().setAttribute("placeholder", "Property #3");
 
-    @Override
-    public void edit(CarDto carDto) {
-        if (carDto.getManufacturer() == null) {
-            carDto.setManufacturer(manufacturer.getValue());
-        }
-
-        driver.edit(carDto);
+        bindWidget("model", model);
+        bindWidget("manufacturer", manufacturer);
+        bindWidget("someString", someString);
+        bindWidget("someNumber", someNumber);
+        bindWidget("someDate", someDate);
     }
 
     @Override
     public void setAllowedManufacturers(List<ManufacturerDto> manufacturerDtos) {
         manufacturer.setValue(manufacturerDtos.isEmpty() ? null : manufacturerDtos.get(0));
         manufacturer.setAcceptableValues(manufacturerDtos);
-    }
-
-    @Override
-    public void resetFields(CarDto carDto) {
-        driver.edit(carDto);
-    }
-
-    @Override
-    public void getCar() {
-        getUiHandlers().onSave(driver.flush());
     }
 }

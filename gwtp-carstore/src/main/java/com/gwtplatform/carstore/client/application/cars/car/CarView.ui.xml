@@ -1,5 +1,13 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:c="urn:import:com.gwtplatform.carstore.client.application.cars.car.widget">
+             xmlns:d="urn:import:com.google.gwt.user.datepicker.client">
+    <ui:with field="resource" type="com.gwtplatform.carstore.client.resources.AppResources"/>
+
+    <ui:style>
+        .formRow {
+            margin-bottom: 10px;
+        }
+    </ui:style>
+
     <g:PopupPanel glassEnabled="true" autoHideEnabled="true" animationEnabled="true">
         <g:HTMLPanel>
             <div>
@@ -13,7 +21,17 @@
             </div>
 
             <div>
-                <c:CarPropertiesEditor ui:field="carProperties" debugId="car-properties-editor"/>
+                <div class="{style.formRow}">
+                    <g:TextBox ui:field="someString" styleName="{resource.styles.mobileTextField}"/>
+                </div>
+
+                <div class="{style.formRow}">
+                    <g:IntegerBox ui:field="someNumber" styleName="{resource.styles.mobileTextField}"/>
+                </div>
+
+                <div>
+                    <d:DateBox ui:field="someDate" styleName="{resource.styles.mobileTextField}"/>
+                </div>
             </div>
 
             <div>

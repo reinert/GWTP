@@ -17,8 +17,10 @@
 package com.gwtplatform.carstore.client.application.cars.car;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import com.google.gwt.user.client.Window;
@@ -27,6 +29,8 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.carstore.client.application.cars.car.CarPresenter.MyView;
 import com.gwtplatform.carstore.client.application.cars.car.navigation.NavigationTab;
 import com.gwtplatform.carstore.client.application.cars.car.navigation.NavigationTabEvent;
+import com.gwtplatform.carstore.client.application.cars.car.properties.CarDtoProperties;
+import com.gwtplatform.carstore.client.application.cars.car.properties.CarPropertiesDtoProperties;
 import com.gwtplatform.carstore.client.application.cars.event.CarAddedEvent;
 import com.gwtplatform.carstore.client.application.event.ActionBarEvent;
 import com.gwtplatform.carstore.client.application.event.ChangeActionBarEvent;
@@ -42,6 +46,7 @@ import com.gwtplatform.carstore.client.rest.ManufacturerService;
 import com.gwtplatform.carstore.client.util.AbstractAsyncCallback;
 import com.gwtplatform.carstore.client.util.ErrorHandlerAsyncCallback;
 import com.gwtplatform.carstore.shared.dto.CarDto;
+import com.gwtplatform.carstore.shared.dto.CarPropertiesDto;
 import com.gwtplatform.carstore.shared.dto.ManufacturerDto;
 import com.gwtplatform.dispatch.rest.shared.RestDispatch;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -51,18 +56,18 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
+import com.gwtplatform.mvp.databind.client.Binding;
+import com.gwtplatform.mvp.databind.client.DatabindView;
+import com.gwtplatform.mvp.databind.client.property.DatePropertyAccessor;
+import com.gwtplatform.mvp.databind.client.property.IntPropertyAccessor;
+import com.gwtplatform.mvp.databind.client.property.PropertyAccessor;
+import com.gwtplatform.mvp.databind.client.property.TextPropertyAccessor;
 
 public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
         implements CarUiHandlers, NavigationTab, GoBackEvent.GoBackHandler, ActionBarEvent.ActionBarHandler {
 
-    public interface MyView extends View, HasUiHandlers<CarUiHandlers> {
-        void edit(CarDto carDto);
-
+    public interface MyView extends DatabindView<CarUiHandlers> {
         void setAllowedManufacturers(List<ManufacturerDto> manufacturerDtos);
-
-        void resetFields(CarDto carDto);
-
-        void getCar();
     }
 
     public interface MyProxy extends ProxyPlace<CarPresenter> {
@@ -74,8 +79,8 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
     private final RestDispatch dispatcher;
     private final PlaceManager placeManager;
     private final CarProxyFactory carProxyFactory;
-
-    private CarDto carDto;
+    private final Binding<CarDto> binding;
+    private final Binding<CarPropertiesDto> propertiesBinding;
 
     @Inject
     public CarPresenter(EventBus eventBus,
@@ -96,7 +101,17 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
         this.messages = messages;
         this.placeManager = placeManager;
         this.carProxyFactory = carProxyFactory;
-        this.carDto = carDto != null ? carDto : new CarDto();
+        this.binding = new Binding<CarDto>(view);
+        this.propertiesBinding = new Binding<CarPropertiesDto>(view);
+
+        //TODO: support nesting bindings
+        if (carDto != null) {
+            binding.setModel(carDto);
+            propertiesBinding.setModel(carDto.getCarProperties());
+        } else {
+            binding.setModel(new CarDto());
+            propertiesBinding.setModel(new CarPropertiesDto());
+        }
 
         getView().setUiHandlers(this);
     }
@@ -110,11 +125,13 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
     public void onActionEvent(ActionBarEvent event) {
         if (event.isTheSameToken(NameTokens.newCar)) {
             if (event.getActionType() == ActionType.DONE) {
-                getView().getCar();
+                flush();
+                onSave();
             }
-        } else if (event.isTheSameToken(carDto.getManufacturer().getName() + carDto.getModel())) {
+        } else if (event.isTheSameToken(binding.getModel().getManufacturer().getName() + binding.getModel().getModel())) {
             if (event.getActionType() == ActionType.UPDATE) {
-                getView().getCar();
+                flush();
+                onSave();
             } else if (event.getActionType() == ActionType.DELETE) {
                 onDeleteCar();
             }
@@ -127,7 +144,13 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
     }
 
     @Override
-    public void onSave(final CarDto carDto) {
+    public void onSave() {
+        // Ensure #propertiesBinding merged to #binding.
+        // When View call #onSave, the values were already flushed, but we need to manually merge the two bindings.
+        // Later, with nested binding support, it won't be necessary.
+        mergeBindings();
+
+        final CarDto carDto = binding.getModel();
         dispatcher.execute(carService.saveOrCreate(carDto), new ErrorHandlerAsyncCallback<CarDto>(this) {
             @Override
             public void onSuccess(CarDto newCar) {
@@ -138,6 +161,7 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
 
     @Override
     public String getName() {
+        final CarDto carDto = binding.getModel();
         if (carDto.getId() != null) {
             return carDto.getManufacturer().getName() + " " + carDto.getModel();
         } else {
@@ -155,10 +179,29 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
         return true;
     }
 
+    /**
+     * Must be called by View when some bound widget changes value.
+     *
+     * @param id    property id
+     * @param value new value from view (may need unformatting)
+     */
+    @Override
+    public void onValueChanged(String id, Object value) {
+        //TODO: create BindingManager?
+        binding.onValueChanged(id, value);
+        propertiesBinding.onValueChanged(id, value);
+    }
+
     @Override
     protected void onBind() {
         addRegisteredHandler(GoBackEvent.getType(), this);
         addRegisteredHandler(ActionBarEvent.getType(), this);
+
+        binding.bindProperty("model", CarDtoProperties.MODEL);
+        binding.bindProperty("manufacturer", CarDtoProperties.MANUFACTURER);
+        propertiesBinding.bindProperty("someString", CarPropertiesDtoProperties.SOME_STRING);
+        propertiesBinding.bindProperty("someNumber", CarPropertiesDtoProperties.SOME_NUMBER);
+        propertiesBinding.bindProperty("someDate", CarPropertiesDtoProperties.SOME_DATE);
     }
 
     @Override
@@ -190,7 +233,18 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
 
     private void onGetManufacturerSuccess(List<ManufacturerDto> manufacturerDtos) {
         getView().setAllowedManufacturers(manufacturerDtos);
-        getView().edit(carDto);
+        refresh();
+    }
+
+    private void flush() {
+        //TODO: support nesting bindings
+        propertiesBinding.flush();
+        binding.flush();
+        mergeBindings();
+    }
+
+    private void mergeBindings() {
+        binding.getModel().setCarProperties(propertiesBinding.getModel());
     }
 
     private void onCarSaved(CarDto oldCar, CarDto newCar) {
@@ -198,8 +252,8 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
         CarAddedEvent.fire(CarPresenter.this, newCar, oldCar.getId() == null);
 
         if (oldCar.getId() == null) {
-            carDto = new CarDto();
-            getView().resetFields(carDto);
+            binding.setModel(new CarDto());
+            propertiesBinding.setModel(new CarPropertiesDto());
 
             MyProxy proxy = carProxyFactory.create(newCar, newCar.getManufacturer().getName() + newCar.getModel());
 
@@ -208,6 +262,7 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
     }
 
     private void onDeleteCar() {
+        final CarDto carDto = binding.getModel();
         Boolean confirm = Window.confirm("Are you sure you want to delete " + carDto.getModel() + "?");
         if (confirm) {
             dispatcher.execute(carService.delete(carDto.getId()), new ErrorHandlerAsyncCallback<Void>(this) {
@@ -217,5 +272,10 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
                 }
             });
         }
+    }
+
+    private void refresh() {
+        binding.refresh();
+        propertiesBinding.refresh();
     }
 }
