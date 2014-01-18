@@ -17,7 +17,7 @@ import java.util.Iterator;
  *
  * @author Danilo Reinert
  */
-public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterable<String> {
+public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterable<String>, Binder {
 
     private T model;
     private final DatabindView view;
@@ -269,6 +269,19 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     @Override
     public boolean unbind(String id) {
         return engine.unbind(id);
+    }
+
+    /**
+     * Unbind all properties and return if all were successfully unbound.
+     *
+     * @return {@code true} if all properties were unbound, {@code false} otherwise.
+     */
+    public boolean unbind() {
+        boolean allUnbound = true;
+        for (String id : engine) {
+            if (!unbind(id)) allUnbound = false;
+        }
+        return allUnbound;
     }
 
     private boolean doFlush(String id) {
