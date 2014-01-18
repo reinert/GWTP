@@ -206,6 +206,17 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
         }
     }
 
+    /**
+     * Send all auto bind properties' values to view.
+     */
+    public void refreshAutoOnly() {
+        for (String id : engine) {
+            if (engine.isAutoBind(id)) {
+                setValueToView(id);
+            }
+        }
+    }
+
     @Override
     public void onValueChanged(String id, Object value) {
         setValueToModel(id, value);
@@ -263,7 +274,7 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
      */
     public void setModel(T model) {
         this.model = model;
-        refresh();
+        refreshAutoOnly();
     }
 
     @Override
@@ -294,14 +305,6 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
             }
         }
         return true;
-    }
-
-    private void refreshAuto() {
-        for (String id : engine) {
-            if (engine.isAutoBind(id)) {
-                setValueToView(id);
-            }
-        }
     }
 
     private void setValueToView(String id) {
