@@ -5,6 +5,7 @@
     <inherits name='com.gwtplatform.dispatch.rest.DispatchRest'/>
     <inherits name="com.google.gwt.uibinder.GinUiBinder"/>
     <inherits name="com.gwtplatform.mvp.MvpWithFormFactor"/>
+    <inherits name="com.gwtplatform.mvp.databind.Databind"/>
 
     <!-- Inherit the default GWT style sheet. -->
     <inherits name='com.google.gwt.user.theme.standard.Standard'/>
