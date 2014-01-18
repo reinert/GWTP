@@ -187,11 +187,11 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
         addRegisteredHandler(GoBackEvent.getType(), this);
         addRegisteredHandler(ActionBarEvent.getType(), this);
 
-        binding.bindProperty("model", CarDtoProperties.MODEL);
-        binding.bindProperty("manufacturer", CarDtoProperties.MANUFACTURER);
-        propertiesBinding.bindProperty("someString", CarPropertiesDtoProperties.SOME_STRING);
-        propertiesBinding.bindProperty("someNumber", CarPropertiesDtoProperties.SOME_NUMBER);
-        propertiesBinding.bindProperty("someDate", CarPropertiesDtoProperties.SOME_DATE);
+        registerHandler(binding.bindProperty("model", CarDtoProperties.MODEL));
+        registerHandler(binding.bindProperty("manufacturer", CarDtoProperties.MANUFACTURER));
+        registerHandler(propertiesBinding.bindProperty("someString", CarPropertiesDtoProperties.SOME_STRING));
+        registerHandler(propertiesBinding.bindProperty("someNumber", CarPropertiesDtoProperties.SOME_NUMBER));
+        registerHandler(propertiesBinding.bindProperty("someDate", CarPropertiesDtoProperties.SOME_DATE));
     }
 
     @Override
