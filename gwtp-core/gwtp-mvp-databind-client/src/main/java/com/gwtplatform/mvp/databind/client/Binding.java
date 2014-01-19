@@ -24,47 +24,8 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     private T model;
 
     public Binding(DatabindView view) {
+        if (view == null) throw new NullPointerException("The parameter _view_ cannot be null");
         this.view = view;
-    }
-
-    @Override
-    public <F> HandlerRegistration bindProperty(boolean autoBind, String id, PropertyAccessor<T, F> propertyAccessor, Validator<T, F> validatesValue, Formatter<F, ?> formatter) {
-        return engine.bindProperty(autoBind, id, propertyAccessor, validatesValue, formatter);
-    }
-
-    @Override
-    public <F> HandlerRegistration bindProperty(boolean autoBind, String id, PropertyAccessor<T, F> propertyAccessor, Validator<T, F> validatesValue) {
-        return engine.bindProperty(autoBind, id, propertyAccessor, validatesValue);
-    }
-
-    @Override
-    public <F> HandlerRegistration bindProperty(boolean autoBind, String id, PropertyAccessor<T, F> propertyAccessor, Formatter<F, ?> formatter) {
-        return engine.bindProperty(autoBind, id, propertyAccessor, formatter);
-    }
-
-    @Override
-    public <F> HandlerRegistration bindProperty(boolean autoBind, String id, ProvidesValue<T, F> providesValue, ReadFormatter<F, ?> readFormatter) {
-        return engine.bindProperty(autoBind, id, providesValue, readFormatter);
-    }
-
-    @Override
-    public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor, Validator<T, F> validatesValue, Formatter<F, ?> formatter) {
-        return engine.bindProperty(id, propertyAccessor, validatesValue, formatter);
-    }
-
-    @Override
-    public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor, Validator<T, F> validatesValue) {
-        return engine.bindProperty(id, propertyAccessor, validatesValue);
-    }
-
-    @Override
-    public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor, Formatter<F, ?> formatter) {
-        return engine.bindProperty(id, propertyAccessor, formatter);
-    }
-
-    @Override
-    public <F> HandlerRegistration bindProperty(String id, ProvidesValue<T, F> providesValue, ReadFormatter<F, ?> readFormatter) {
-        return engine.bindProperty(id, providesValue, readFormatter);
     }
 
     @Override
@@ -73,18 +34,67 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(boolean autoBind, String id, ProvidesValue<T, F> providesValue) {
-        return engine.bindProperty(autoBind, id, providesValue);
-    }
-
-    @Override
-    public <F> HandlerRegistration bindProperty(boolean autoBind, String id, PropertyAccessor<T, F> propertyAccessor) {
-        return engine.bindProperty(autoBind, id, propertyAccessor);
+    public <F> HandlerRegistration bindProperty(String id, ProvidesValue<T, F> providesValue,
+                                                ReadFormatter<F, ?> readFormatter) {
+        return engine.bindProperty(id, providesValue, readFormatter);
     }
 
     @Override
     public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor) {
         return engine.bindProperty(id, propertyAccessor);
+    }
+
+    @Override
+    public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor,
+                                                Validator<T, F> validatesValue) {
+        return engine.bindProperty(id, propertyAccessor, validatesValue);
+    }
+
+    @Override
+    public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor,
+                                                Validator<T, F> validatesValue, Formatter<F, ?> formatter) {
+        return engine.bindProperty(id, propertyAccessor, validatesValue, formatter);
+    }
+
+    @Override
+    public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor,
+                                                Formatter<F, ?> formatter) {
+        return engine.bindProperty(id, propertyAccessor, formatter);
+    }
+
+    @Override
+    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, ProvidesValue<T, F> providesValue) {
+        return engine.bindProperty(autoFlush, id, providesValue);
+    }
+
+    @Override
+    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor) {
+        return engine.bindProperty(autoFlush, id, propertyAccessor);
+    }
+
+    @Override
+    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, ProvidesValue<T, F> providesValue,
+                                                ReadFormatter<F, ?> readFormatter) {
+        return engine.bindProperty(autoFlush, id, providesValue, readFormatter);
+    }
+
+    @Override
+    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor,
+                                                Validator<T, F> validatesValue) {
+        return engine.bindProperty(autoFlush, id, propertyAccessor, validatesValue);
+    }
+
+    @Override
+    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor,
+                                                Validator<T, F> validatesValue, Formatter<F, ?> formatter) {
+        return engine.bindProperty(autoFlush, id, propertyAccessor, validatesValue, formatter);
+    }
+
+
+    @Override
+    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor,
+                                                Formatter<F, ?> formatter) {
+        return engine.bindProperty(autoFlush, id, propertyAccessor, formatter);
     }
 
     /**
@@ -148,7 +158,7 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
      * @return {@code true} if property is set to view by updating the model, {@code false} otherwise
      */
     public boolean isAutoBind(String id) {
-        return engine.isAutoBind(id);
+        return engine.isAutoFlush(id);
     }
 
     /**
@@ -213,16 +223,25 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     }
 
     /**
-     * Send all auto bind properties' values to view.
+     * Send all auto flush properties' values to view.
      */
     public void refreshAutoOnly() {
         for (String id : engine) {
-            if (engine.isAutoBind(id)) {
+            if (engine.isAutoFlush(id)) {
                 setValueToView(id);
             }
         }
     }
 
+    /**
+     * Must be called by View when some bound widget changes value.
+     *
+     * Presenter must implement #DatabindUiHandlers and delegate the execution of #DatabindUiHandlers.onValueChanged
+     * to this method.
+     *
+     * @param id property id
+     * @param value new value from view (may need unformatting)
+     */
     @Override
     public void onValueChanged(String id, Object value) {
         setValueToModel(id, value);
