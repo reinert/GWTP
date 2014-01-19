@@ -19,9 +19,9 @@ import java.util.Iterator;
  */
 public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterable<String>, Binder {
 
-    private T model;
+    private final PresenterEngine<T> engine = new PresenterEngine<T>();
     private final DatabindView view;
-    private PresenterEngine<T> engine = new PresenterEngine<T>();
+    private T model;
 
     public Binding(DatabindView view) {
         this.view = view;
@@ -151,6 +151,12 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
         return engine.isAutoBind(id);
     }
 
+    /**
+     * Returns {@code true} if this binding has a property accessor bound to this property id.
+     *
+     * @param id identification of the property
+     * @return {@code true} if this property id is bound, {@code false} otherwise.
+     */
     public boolean hasProperty(String id) {
         return engine.hasProperty(id);
     }
@@ -282,18 +288,18 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
         return engine.unbind(id);
     }
 
-    /**
-     * Unbind all properties and return if all were successfully unbound.
-     *
-     * @return {@code true} if all properties were unbound, {@code false} otherwise.
-     */
-    public boolean unbind() {
-        boolean allUnbound = true;
-        for (String id : engine) {
-            if (!unbind(id)) allUnbound = false;
-        }
-        return allUnbound;
-    }
+//    /**
+//     * Unbind all properties and return if all were successfully unbound.
+//     *
+//     * @return {@code true} if all properties were unbound, {@code false} otherwise.
+//     */
+//    public boolean unbind() {
+//        boolean allUnbound = true;
+//        for (String id : engine) {
+//            if (!unbind(id)) allUnbound = false;
+//        }
+//        return allUnbound;
+//    }
 
     private boolean doFlush(String id) {
         Object formattedValue = view.getValue(id);
