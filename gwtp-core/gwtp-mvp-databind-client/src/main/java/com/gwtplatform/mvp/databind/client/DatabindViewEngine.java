@@ -5,6 +5,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.TakesValue;
 import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.client.HasUiHandlers;
@@ -117,9 +118,8 @@ public class DatabindViewEngine implements ValidationHandlerBinder, DatabindVali
 
     @Override
     public <F> HandlerRegistration bindWidget(final String id, final HasValue<F> widget) {
-        assert (widget instanceof Widget) : "HasValue parameter must be of type Widget";
-        Widget w = (Widget) widget;
-        w.getElement().setId(id);
+        //assert (widget instanceof IsWidget) : "HasValue parameter must be of type IsWidget";
+
         HandlerRegistration handlerRegistration = addChangeHandlerToBoundWidget(id, widget);
         if (holderMap.containsKey(id)) {
             Holder holder = holderMap.get(id);
@@ -138,9 +138,8 @@ public class DatabindViewEngine implements ValidationHandlerBinder, DatabindVali
 
     @Override
     public <F> HandlerRegistration bindReadOnlyWidget(final String id, final TakesValue<F> widget) {
-        assert (widget instanceof Widget) : "TakesValue parameter must be of type Widget";
-        Widget w = (Widget) widget;
-        w.getElement().setId(id);
+        //assert (widget instanceof IsWidget) : "TakesValue parameter must be of type IsWidget";
+
         if (holderMap.containsKey(id)) {
             Holder holder = holderMap.get(id);
             holder.widget = widget;
