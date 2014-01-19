@@ -9,6 +9,7 @@ import com.gwtplatform.mvp.databind.client.property.ProvidesValue;
 import com.gwtplatform.mvp.databind.client.validation.Validation;
 import com.gwtplatform.mvp.databind.client.validation.Validator;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -22,82 +23,72 @@ public class PresenterEngine<T> implements PropertyBinder<T>, Iterable<String> {
     private static class Holder {
 
         PropertyAccessor propertyAccessor;
-        Validator validatesValue;
+        Validator validator;
         Formatter formatter;
-        boolean autoBind;
+        boolean autoFlush;
 
-        Holder(boolean autoBind, PropertyAccessor propertyAccessor, Validator validatesValue, Formatter formatter) {
+        Holder(boolean autoFlush, PropertyAccessor propertyAccessor, Validator validator, Formatter formatter) {
             this.propertyAccessor = propertyAccessor;
-            this.validatesValue = validatesValue;
+            this.validator = validator;
             this.formatter = formatter;
-            this.autoBind = autoBind;
+            this.autoFlush = autoFlush;
         }
 
-        Holder(boolean autoBind, PropertyAccessor propertyAccessor) {
-            this(autoBind, propertyAccessor, null, null);
+        Holder(boolean autoFlush, PropertyAccessor propertyAccessor) {
+            this(autoFlush, propertyAccessor, null, null);
         }
 
-        Holder(boolean autoBind, PropertyAccessor propertyAccessor, Formatter formatter) {
-            this(autoBind, propertyAccessor, null, formatter);
+        Holder(boolean autoFlush, PropertyAccessor propertyAccessor, Formatter formatter) {
+            this(autoFlush, propertyAccessor, null, formatter);
         }
 
-        Holder(boolean autoBind, PropertyAccessor propertyAccessor, Validator validatesValue) {
-            this(autoBind, propertyAccessor, validatesValue, null);
+        Holder(boolean autoFlush, PropertyAccessor propertyAccessor, Validator validator) {
+            this(autoFlush, propertyAccessor, validator, null);
         }
     }
 
     //TODO: substitute map by a simple javascript object to increase performance
     private final Map<String, Holder> holderMap = new HashMap<String, Holder>();
 
-    public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor) {
-        return bindProperty(id, propertyAccessor, null, null);
-    }
-
-    public <F> HandlerRegistration bindProperty(boolean autoBind, String id, PropertyAccessor<T, F> propertyAccessor) {
-        return bindProperty(autoBind, id, propertyAccessor, null, null);
-    }
-
-    public <F> HandlerRegistration bindProperty(boolean autoBind, String id, final ProvidesValue<T, F> providesValue) {
-        return bindProperty(autoBind, id, new PropertyAccessor<T, F>() {
-            @Override
-            public void setValue(T object, F value) {
-            }
-
-            @Override
-            public F getValue(T object) {
-                return providesValue.getValue(object);
-            }
-        }, null, null);
-    }
-
-    public <F> HandlerRegistration bindProperty(String id, final ProvidesValue<T, F> providesValue) {
-        return bindProperty(id, providesValue, null);
+    public <F> HandlerRegistration bindProperty(String id, ProvidesValue<T, F> providesValue) {
+        return bindProperty(true, id, providesValue);
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(String id, ProvidesValue<T, F> providesValue, ReadFormatter<F, ?> readFormatter) {
+    public <F> HandlerRegistration bindProperty(String id, ProvidesValue<T, F> providesValue,
+                                                ReadFormatter<F, ?> readFormatter) {
         return bindProperty(true, id, providesValue, readFormatter);
     }
 
+    public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor) {
+        return bindProperty(true, id, propertyAccessor);
+    }
+
+    public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor,
+                                                Validator<T, F> validator) {
+        return bindProperty(true, id, propertyAccessor, validator);
+    }
+
     @Override
-    public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor, Formatter<F, ?> formatter) {
+    public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor,
+                                                Validator<T, F> validator, Formatter<F, ?> formatter) {
+        return bindProperty(true, id, propertyAccessor, validator, formatter);
+    }
+
+    @Override
+    public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor,
+                                                Formatter<F, ?> formatter) {
         return bindProperty(true, id, propertyAccessor, formatter);
     }
 
-    public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor, Validator<T, F> validatesValue) {
-        return bindProperty(true, id, propertyAccessor, validatesValue, null);
+    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, ProvidesValue<T, F> providesValue) {
+        return bindProperty(autoFlush, id, providesValue, null);
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor, Validator<T, F> validatesValue,
-                                 Formatter<F, ?> formatter) {
-        return bindProperty(true, id, propertyAccessor, validatesValue, formatter);
-    }
-
-    @Override
-    public <F> HandlerRegistration bindProperty(boolean autoBind, String id, final ProvidesValue<T, F> providesValue,
-                                 ReadFormatter<F, ?> readFormatter) {
-        return bindProperty(id, new PropertyAccessor<T, F>() {
+    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, final ProvidesValue<T, F> providesValue,
+                                                final ReadFormatter<F, ?> readFormatter) {
+        final PropertyAccessor<T, F> propertyAccessor = new PropertyAccessor<T, F>() {
             @Override
             public void setValue(T object, F value) {
             }
@@ -106,40 +97,61 @@ public class PresenterEngine<T> implements PropertyBinder<T>, Iterable<String> {
             public F getValue(T object) {
                 return providesValue.getValue(object);
             }
-        }, readFormatter);
+        };
+        Formatter<F, Object> formatter = null;
+        if (readFormatter != null) {
+            formatter = new Formatter<F, Object>() {
+                @Nullable
+                @Override
+                public F unformat(@Nullable Object formattedValue) {
+                    return null;
+                }
+
+                @Nullable
+                @Override
+                public Object format(@Nullable F rawValue) {
+                    return readFormatter.format(rawValue);
+                }
+            };
+        }
+        return bindProperty(autoFlush, id, propertyAccessor, null, formatter);
+    }
+
+    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor) {
+        return bindProperty(autoFlush, id, propertyAccessor, null, null);
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(boolean autoBind, String id, PropertyAccessor<T, F> propertyAccessor,
-                                 Formatter<F, ?> formatter) {
-        return bindProperty(autoBind, id, propertyAccessor, null, null);
+    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor,
+                                                Formatter<F, ?> formatter) {
+        return bindProperty(autoFlush, id, propertyAccessor, null, formatter);
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(boolean autoBind, String id, PropertyAccessor<T, F> propertyAccessor,
-                                 Validator<T, F> validatesValue) {
-        return bindProperty(autoBind, id, propertyAccessor, validatesValue, null);
+    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor,
+                                 Validator<T, F> validator) {
+        return bindProperty(autoFlush, id, propertyAccessor, validator, null);
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(boolean autoBind, String id, PropertyAccessor<T, F> propertyAccessor,
-                                 Validator<T, F> validatesValue, Formatter<F, ?> formatter) {
+    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor,
+                                 Validator<T, F> validator, Formatter<F, ?> formatter) {
         if (holderMap.containsKey(id)) {
-            Holder tHolder = holderMap.get(id);
-            tHolder.propertyAccessor = propertyAccessor;
-            tHolder.validatesValue = validatesValue;
-            tHolder.formatter = formatter;
+            Holder holder = holderMap.get(id);
+            holder.propertyAccessor = propertyAccessor;
+            holder.validator = validator;
+            holder.formatter = formatter;
         } else {
-            Holder tHolder = new Holder(autoBind, propertyAccessor, validatesValue, formatter);
-            holderMap.put(id, tHolder);
+            Holder holder = new Holder(autoFlush, propertyAccessor, validator, formatter);
+            holderMap.put(id, holder);
         }
         return BinderHandlerRegistration.of(this, id);
     }
 
     public Validation isValueValid(String id, T data, Object value) {
         Holder holder = holderMap.get(id);
-        if (holder != null && holder.validatesValue != null) {
-            return holder.validatesValue.validate(data, unformat(id, value));
+        if (holder != null && holder.validator != null) {
+            return holder.validator.validate(data, unformat(id, value));
         }
         return Validation.valid();
     }
@@ -182,11 +194,11 @@ public class PresenterEngine<T> implements PropertyBinder<T>, Iterable<String> {
     }
 
     public Validator<T, ?> getValidatesValue(String id) {
-        return holderMap.get(id).validatesValue;
+        return holderMap.get(id).validator;
     }
 
-    public boolean isAutoBind(String id) {
-        return holderMap.get(id).autoBind;
+    public boolean isAutoFlush(String id) {
+        return holderMap.get(id).autoFlush;
     }
 
     public boolean hasProperty(String id) {
