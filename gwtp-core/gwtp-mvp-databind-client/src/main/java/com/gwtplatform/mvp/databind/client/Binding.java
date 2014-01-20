@@ -26,6 +26,13 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     public Binding(DatabindView view) {
         if (view == null) throw new NullPointerException("The parameter _view_ cannot be null");
         this.view = view;
+        this.view.setUiHandlers(this);
+    }
+
+    public Binding(DatabindView view, DatabindUiHandlers uiHandlers) {
+        if (view == null) throw new NullPointerException("The parameter _view_ cannot be null");
+        this.view = view;
+        this.view.setUiHandlers(uiHandlers);
     }
 
     @Override
