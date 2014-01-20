@@ -87,6 +87,12 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
 
     @Override
     public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor,
+                                                Formatter<F, ?> formatter) {
+        return engine.bindProperty(autoFlush, id, propertyAccessor, formatter);
+    }
+
+    @Override
+    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor,
                                                 Validator<T, F> validatesValue) {
         return engine.bindProperty(autoFlush, id, propertyAccessor, validatesValue);
     }
@@ -95,13 +101,6 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor,
                                                 Validator<T, F> validatesValue, Formatter<F, ?> formatter) {
         return engine.bindProperty(autoFlush, id, propertyAccessor, validatesValue, formatter);
-    }
-
-
-    @Override
-    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor,
-                                                Formatter<F, ?> formatter) {
-        return engine.bindProperty(autoFlush, id, propertyAccessor, formatter);
     }
 
     /**
@@ -164,7 +163,7 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
      * @param id identification of the property
      * @return {@code true} if property is set to view by updating the model, {@code false} otherwise
      */
-    public boolean isAutoBind(String id) {
+    public boolean isAutoFlush(String id) {
         return engine.isAutoFlush(id);
     }
 
@@ -178,6 +177,11 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
         return engine.hasProperty(id);
     }
 
+    /**
+     * Returns an iterator over bound properties' ids.
+     *
+     * @return an Iterator.
+     */
     @Override
     public Iterator<String> iterator() {
         return engine.iterator();
