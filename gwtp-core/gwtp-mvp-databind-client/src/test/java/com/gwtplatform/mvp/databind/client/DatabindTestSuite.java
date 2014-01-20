@@ -16,6 +16,9 @@ public class DatabindTestSuite {
         suite.addTestSuite(RequiredValidatorTest.class);
         suite.addTestSuite(EmailValidatorTest.class);
 
+        suite.addTestSuite(DatabindViewEngineTest.class);
+        suite.addTestSuite(BindingTest.class);
+
         return suite;
     }
 
