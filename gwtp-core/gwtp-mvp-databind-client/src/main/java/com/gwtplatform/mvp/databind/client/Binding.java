@@ -23,6 +23,7 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     private final DatabindView view;
     private T model;
 
+    @SuppressWarnings("unchecked")
     public Binding(DatabindView view) {
         if (view == null) {
             throw new NullPointerException("The parameter _view_ cannot be null");
@@ -31,6 +32,7 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
         this.view.setUiHandlers(this);
     }
 
+    @SuppressWarnings("unchecked")
     public Binding(DatabindView view, DatabindUiHandlers uiHandlers) {
         if (view == null) {
             throw new NullPointerException("The parameter _view_ cannot be null");
@@ -79,8 +81,8 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, PropertyAccessor<T,
-            F> propertyAccessor) {
+    public <F> HandlerRegistration bindProperty(boolean autoRefresh, String id,
+                                                PropertyAccessor<T, F> propertyAccessor) {
         return engine.bindProperty(autoRefresh, id, propertyAccessor);
     }
 
@@ -167,11 +169,11 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
      * Get property's value from model.
      *
      * @param id    identification of the property
-     * @param model model object
      * @return value retrieved from model's property
      */
-    public Object getValue(String id, T model) {
-        return engine.getRawValue(id, model);
+    @SuppressWarnings("unchecked")
+    public <V> V getValue(String id) {
+        return (V) engine.getRawValue(id, model);
     }
 
     /**
@@ -207,11 +209,10 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
      * Tells whether the specified value can be set to the property of the model.
      *
      * @param id    identification of the property
-     * @param model model object
      * @param value value to be validated
      * @return validation
      */
-    public Validation isValueValid(String id, T model, Object value) {
+    public Validation isValueValid(String id, Object value) {
         return engine.isValueValid(id, model, value);
     }
 
@@ -260,7 +261,7 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     }
 
     /**
-     * Send all auto flush properties' values to view.
+     * Send all auto refresh properties' values to view.
      */
     public void refreshAutoOnly() {
         for (String id : engine) {
@@ -271,7 +272,7 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     }
 
     /**
-     * Set a model to this databinding and send all auto bound properties to view.
+     * Set a model to this databinding and send all bound (auto refresh) properties to view.
      *
      * @param model model object
      */
@@ -284,11 +285,11 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
      * Set value to model's property.
      *
      * @param id    identification of the property
-     * @param model model object
      * @param value value to be applied
      */
-    public void setValue(String id, T model, Object value) {
+    public void setValue(String id, Object value) {
         engine.setRawValue(id, model, value);
+        refresh(id);
     }
 
     @Override
