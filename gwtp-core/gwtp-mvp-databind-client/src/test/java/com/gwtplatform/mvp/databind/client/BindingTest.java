@@ -2,47 +2,61 @@ package com.gwtplatform.mvp.databind.client;
 
 import com.google.gwt.user.client.TakesValue;
 import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.web.bindery.event.shared.HandlerRegistration;
+import com.gwtplatform.mvp.databind.client.mock.DatabindViewMock;
+import com.gwtplatform.mvp.databind.client.mock.HasValueMock;
 import junit.framework.TestCase;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
-import static org.mockito.Mockito.*;
 
 /**
  * @author Danilo Reinert
  */
 public class BindingTest extends TestCase {
 
+    interface BindCallback {
+        void bind(DatabindView view, String propertyId, TakesValue widget);
+    }
+
     public void testBindReadOnlyWidget() {
-        final DatabindViewEngine delegate = new DatabindViewEngine();
-
-        final DatabindView mockView = mock(DatabindView.class);
-
-        when(mockView.bindWidget(anyString(), any(HasValue.class))).then(new Answer<HandlerRegistration>() {
+        doTestBind(new BindCallback() {
             @Override
-            public HandlerRegistration answer(InvocationOnMock invocation) throws Throwable {
-                return delegate.bindWidget((String)invocation.getArguments()[0], (HasValue)invocation.getArguments()[1]);
+            public void bind(DatabindView view, String propertyId, TakesValue widget) {
+                view.bindReadOnlyWidget(propertyId, widget);
             }
         });
-        when(mockView.bindReadOnlyWidget(anyString(), any(TakesValue.class))).then(new Answer<HandlerRegistration>() {
+    }
+
+    public void testBindWidget() {
+        doTestBind(new BindCallback() {
             @Override
-            public HandlerRegistration answer(InvocationOnMock invocation) throws Throwable {
-                return delegate.bindReadOnlyWidget((String)invocation.getArguments()[0], (TakesValue)invocation.getArguments()[1]);
+            public void bind(DatabindView view, String propertyId, TakesValue widget) {
+                view.bindWidget(propertyId, (HasValue<?>) widget);
             }
         });
+    }
 
-        final String expectedValue = "newValue";
+    private void doTestBind(BindCallback callback) {
+        /*
+        The binding must be tested performing both #DatabindView.getValue and #DatabindView.setValue.
+         */
+        final DatabindView mockView = new DatabindViewMock();
 
-        final TakesValue<String> hasString = mock(TakesValue.class, withSettings().extraInterfaces(IsWidget.class));
-        when(hasString.getValue()).thenReturn(expectedValue);
+        final String propertyId = "someProperty";
+        final String initialValue = "initialValue";
 
-        final String id = "someProperty";
-        mockView.bindReadOnlyWidget(id, hasString);
+        final HasValue<String> takesString = new HasValueMock<String>();
+        takesString.setValue(initialValue);
 
-        assertEquals(expectedValue, delegate.getValue(id));
+        // Bind the widget to the view
+        callback.bind(mockView, propertyId, takesString);
+
+        // Assert the view delegates the value to the bound widget
+        assertEquals(initialValue, mockView.getValue(propertyId));
+
+        final String newValue = "newValue";
+
+        // Perform set operation through the view
+        mockView.setValue(propertyId, newValue);
+
+        // Assert the previous set operation was successful
+        assertEquals(newValue, mockView.getValue(propertyId));
     }
 }
