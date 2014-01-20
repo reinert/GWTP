@@ -7,6 +7,7 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.ValueBoxBase;
 
 /**
  * @author Danilo Reinert
@@ -32,9 +33,14 @@ public class HasValueMock<V> extends TakesValueMock<V> implements HasValue<V> {
     }
 
     @Override
+    public void setValue(V value) {
+        setValue(value, true);
+    }
+
+    @Override
     public void setValue(V value, boolean fireEvents) {
         V oldValue = getValue();
-        setValue(value);
+        super.setValue(value);
         if (fireEvents) {
             ValueChangeEvent.fireIfNotEqual(this, oldValue, value);
         }
