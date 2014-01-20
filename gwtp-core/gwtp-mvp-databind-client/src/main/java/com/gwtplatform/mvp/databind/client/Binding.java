@@ -24,13 +24,17 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     private T model;
 
     public Binding(DatabindView view) {
-        if (view == null) throw new NullPointerException("The parameter _view_ cannot be null");
+        if (view == null) {
+            throw new NullPointerException("The parameter _view_ cannot be null");
+        }
         this.view = view;
         this.view.setUiHandlers(this);
     }
 
     public Binding(DatabindView view, DatabindUiHandlers uiHandlers) {
-        if (view == null) throw new NullPointerException("The parameter _view_ cannot be null");
+        if (view == null) {
+            throw new NullPointerException("The parameter _view_ cannot be null");
+        }
         this.view = view;
         this.view.setUiHandlers(uiHandlers);
     }
@@ -75,7 +79,8 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor) {
+    public <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, PropertyAccessor<T,
+            F> propertyAccessor) {
         return engine.bindProperty(autoRefresh, id, propertyAccessor);
     }
 
@@ -104,90 +109,6 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     }
 
     /**
-     * Tells whether the specified value can be set to the property of the model.
-     *
-     * @param id identification of the property
-     * @param model model object
-     * @param value value to be validated
-     * @return validation
-     */
-    public Validation isValueValid(String id, T model, Object value) {
-        return engine.isValueValid(id, model, value);
-    }
-
-    /**
-     * Get property's value from model.
-     *
-     * @param id identification of the property
-     * @param model model object
-     * @return value retrieved from model's property
-     */
-    public Object getValue(String id, T model) {
-        return engine.getRawValue(id, model);
-    }
-
-    /**
-     * Set value to model's property.
-     *
-     * @param id identification of the property
-     * @param model model object
-     * @param value value to be applied
-     */
-    public void setValue(String id, T model, Object value) {
-        engine.setRawValue(id, model, value);
-    }
-
-    /**
-     * Get property accessor from specified property.
-     *
-     * @param id identification of the property
-     * @return property accessor
-     */
-    public PropertyAccessor<T, ?> getPropertyAccessor(String id) {
-        return engine.getPropertyAccessor(id);
-    }
-
-    /**
-     * Get validator from specified property.
-     *
-     * @param id identification of the property
-     * @return validator
-     */
-    public Validator<T, ?> getValidator(String id) {
-        return engine.getValidatesValue(id);
-    }
-
-    /**
-     * Informs if the property should be automatically sent to view when updating model.
-     *
-     * @param id identification of the property
-     * @return {@code true} if property is set to view by updating the model, {@code false} otherwise
-     */
-    public boolean isAutoRefresh(String id) {
-        return engine.isAutoRefresh(id);
-    }
-
-    /**
-     * Returns {@code true} if this binding has a property accessor bound to this property id.
-     *
-     * @param id identification of the property
-     * @return {@code true} if this property id is bound, {@code false} otherwise.
-     */
-    public boolean hasProperty(String id) {
-        return engine.hasProperty(id);
-    }
-
-    /**
-     * Returns an iterator over bound properties' ids.
-     *
-     * @return an Iterator.
-     */
-    @Override
-    public Iterator<String> iterator() {
-        return engine.iterator();
-    }
-
-    /**
      * Get all values from view, apply to the model and return if all of them were valid.
      *
      * @return {@code true} if all values were valid, {@code false} otherwise
@@ -211,6 +132,111 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
             return doFlush(id);
         } // Id not bound, then the value was not invalid
         return true;
+    }
+
+    /**
+     * Get the bound model.
+     *
+     * @return model object
+     */
+    public T getModel() {
+        return model;
+    }
+
+    /**
+     * Get property accessor from specified property.
+     *
+     * @param id identification of the property
+     * @return property accessor
+     */
+    public PropertyAccessor<T, ?> getPropertyAccessor(String id) {
+        return engine.getPropertyAccessor(id);
+    }
+
+    /**
+     * Get validator from specified property.
+     *
+     * @param id identification of the property
+     * @return validator
+     */
+    public Validator<T, ?> getValidator(String id) {
+        return engine.getValidatesValue(id);
+    }
+
+    /**
+     * Get property's value from model.
+     *
+     * @param id    identification of the property
+     * @param model model object
+     * @return value retrieved from model's property
+     */
+    public Object getValue(String id, T model) {
+        return engine.getRawValue(id, model);
+    }
+
+    /**
+     * Get the bound view.
+     *
+     * @return view
+     */
+    public DatabindView getView() {
+        return view;
+    }
+
+    /**
+     * Returns {@code true} if this binding has a property accessor bound to this property id.
+     *
+     * @param id identification of the property
+     * @return {@code true} if this property id is bound, {@code false} otherwise.
+     */
+    public boolean hasProperty(String id) {
+        return engine.hasProperty(id);
+    }
+
+    /**
+     * Informs if the property should be automatically sent to view when updating model.
+     *
+     * @param id identification of the property
+     * @return {@code true} if property is set to view by updating the model, {@code false} otherwise
+     */
+    public boolean isAutoRefresh(String id) {
+        return engine.isAutoRefresh(id);
+    }
+
+    /**
+     * Tells whether the specified value can be set to the property of the model.
+     *
+     * @param id    identification of the property
+     * @param model model object
+     * @param value value to be validated
+     * @return validation
+     */
+    public Validation isValueValid(String id, T model, Object value) {
+        return engine.isValueValid(id, model, value);
+    }
+
+    /**
+     * Returns an iterator over bound properties' ids.
+     *
+     * @return an Iterator.
+     */
+    @Override
+    public Iterator<String> iterator() {
+        return engine.iterator();
+    }
+
+    /**
+     * Must be called by View when some bound widget changes value.
+     * <p/>
+     * Presenter must implement #DatabindUiHandlers and delegate the execution of #DatabindUiHandlers.onValueChanged
+     * to this method.
+     *
+     * @param id    property id
+     * @param value new value from view (may need unformatting)
+     */
+    @Override
+    public void onValueChanged(String id, Object value) {
+        setValueToModel(id, value);
     }
 
     /**
@@ -245,65 +271,6 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     }
 
     /**
-     * Must be called by View when some bound widget changes value.
-     *
-     * Presenter must implement #DatabindUiHandlers and delegate the execution of #DatabindUiHandlers.onValueChanged
-     * to this method.
-     *
-     * @param id property id
-     * @param value new value from view (may need unformatting)
-     */
-    @Override
-    public void onValueChanged(String id, Object value) {
-        setValueToModel(id, value);
-    }
-
-    /**
-     * Validate and apply a value to a property and return if it was successfully set.
-     * When the model is *null*, no value is set and {@code false} is returned.
-     *
-     * @param id identification of the property
-     * @param value value to be applied
-     * @return {@code true} if the value was validated and applied, {@code false} otherwise
-     */
-    @SuppressWarnings("unchecked")
-    private boolean setValueToModel(String id, Object value) {
-        if (model == null) return false;
-
-        // First, validate the value
-        final Validation validation = engine.isValueValid(id, model, value);
-        if (validation.isValid()) {
-            // If valid, then set to the model and fire valid value event
-            engine.setFormattedValue(id, model, value);
-            view.onValidValue(id, model, value, validation.getValidationMessage());
-            return true;
-        } else {
-            // It must be executed only when a validation occurs and it returns invalid
-            view.onInvalidValue(id, model, value, validation.getValidationMessage());
-        }
-
-        return false;
-    }
-
-    /**
-     * Get the bound model.
-     *
-     * @return model object
-     */
-    public T getModel() {
-        return model;
-    }
-
-    /**
-     * Get the bound view.
-     *
-     * @return view
-     */
-    public DatabindView getView() {
-        return view;
-    }
-
-    /**
      * Set a model to this databinding and send all auto bound properties to view.
      *
      * @param model model object
@@ -311,6 +278,17 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     public void setModel(T model) {
         this.model = model;
         refreshAutoOnly();
+    }
+
+    /**
+     * Set value to model's property.
+     *
+     * @param id    identification of the property
+     * @param model model object
+     * @param value value to be applied
+     */
+    public void setValue(String id, T model, Object value) {
+        engine.setRawValue(id, model, value);
     }
 
     @Override
@@ -341,6 +319,35 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
             }
         }
         return true;
+    }
+
+    /**
+     * Validate and apply a value to a property and return if it was successfully set.
+     * When the model is *null*, no value is set and {@code false} is returned.
+     *
+     * @param id    identification of the property
+     * @param value value to be applied
+     * @return {@code true} if the value was validated and applied, {@code false} otherwise
+     */
+    @SuppressWarnings("unchecked")
+    private boolean setValueToModel(String id, Object value) {
+        if (model == null) {
+            return false;
+        }
+
+        // First, validate the value
+        final Validation validation = engine.isValueValid(id, model, value);
+        if (validation.isValid()) {
+            // If valid, then set to the model and fire valid value event
+            engine.setFormattedValue(id, model, value);
+            view.onValidValue(id, model, value, validation.getValidationMessage());
+            return true;
+        } else {
+            // It must be executed only when a validation occurs and it returns invalid
+            view.onInvalidValue(id, model, value, validation.getValidationMessage());
+        }
+
+        return false;
     }
 
     private void setValueToView(String id) {
