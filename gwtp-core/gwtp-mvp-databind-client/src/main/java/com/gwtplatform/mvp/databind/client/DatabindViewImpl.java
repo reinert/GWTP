@@ -11,20 +11,46 @@ import com.gwtplatform.mvp.databind.client.validation.ValidationMessage;
 /**
  * @author Danilo Reinert
  */
-//TODO: rearrangement and docs
+//TODO: docs
 public class DatabindViewImpl<H extends DatabindUiHandlers> extends ViewWithUiHandlers<H>
         implements DatabindView<H> {
-    
+
     private final DatabindViewEngine engine = new DatabindViewEngine();
 
     @Override
-    public boolean unbind(String id) {return engine.unbind(id);}
+    public <F> HandlerRegistration bindReadOnlyWidget(String id, TakesValue<F> widget) {
+        return engine.bindReadOnlyWidget(id, widget);
+    }
 
     @Override
-    public <F> HandlerRegistration bindReadOnlyWidget(String id, TakesValue<F> widget) {return engine.bindReadOnlyWidget(id, widget);}
+    public <T, F> HandlerRegistration bindValidationHandler(String id, InvalidValueHandler<T, F> invalidValueHandler) {
+        return engine.bindValidationHandler(id, invalidValueHandler);
+    }
 
     @Override
-    public <F> HandlerRegistration bindWidget(String id, HasValue<F> widget) {return engine.bindWidget(id, widget);}
+    public <T, F> HandlerRegistration bindValidationHandler(String id, ValidationHandler<T, F> validationHandler) {
+        return engine.bindValidationHandler(id, validationHandler);
+    }
+
+    @Override
+    public <F> HandlerRegistration bindWidget(String id, HasValue<F> widget) {
+        return engine.bindWidget(id, widget);
+    }
+
+    @Override
+    public <F> F getValue(String id) {
+        return engine.getValue(id);
+    }
+
+    @Override
+    public <T, F> void onInvalidValue(String id, T object, F value, ValidationMessage message) {
+        engine.onInvalidValue(id, object, value, message);
+    }
+
+    @Override
+    public <T, F> void onValidValue(String id, T object, F value, ValidationMessage message) {
+        engine.onValidValue(id, object, value, message);
+    }
 
     @Override
     public void setUiHandlers(H uiHandlers) {
@@ -33,22 +59,12 @@ public class DatabindViewImpl<H extends DatabindUiHandlers> extends ViewWithUiHa
     }
 
     @Override
-    public <F> void setValue(String id, F value) {engine.setValue(id, value);}
+    public <F> void setValue(String id, F value) {
+        engine.setValue(id, value);
+    }
 
     @Override
-    public <F> F getValue(String id) {return engine.getValue(id);}
-
-    @Override
-    public <T, F> HandlerRegistration bindValidationHandler(String id, InvalidValueHandler<T, F> invalidValueHandler) {return engine.bindValidationHandler(id, invalidValueHandler);}
-
-    @Override
-    public <T, F> HandlerRegistration bindValidationHandler(String id, ValidationHandler<T, F> validationHandler) 
-    {return engine.bindValidationHandler(id, validationHandler);}
-
-    @Override
-    public <T, F> void onValidValue(String id, T object, F value, ValidationMessage message) {engine.onValidValue(id,
-            object, value, message);}
-
-    @Override
-    public <T, F> void onInvalidValue(String id, T object, F value, ValidationMessage message) {engine.onInvalidValue(id, object, value, message);}
+    public boolean unbind(String id) {
+        return engine.unbind(id);
+    }
 }
