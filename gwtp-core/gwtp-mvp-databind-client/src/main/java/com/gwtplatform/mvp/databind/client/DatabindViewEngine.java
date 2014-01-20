@@ -155,7 +155,7 @@ public class DatabindViewEngine implements ValidationHandlerBinder, DatabindVali
         return widget.addValueChangeHandler(new ValueChangeHandler<F>() {
             @Override
             public void onValueChange(ValueChangeEvent<F> event) {
-                uiHandlers.onValueChanged(id, widget.getValue());
+                uiHandlers.onValueChanged(id, event.getValue());
             }
         });
     }
