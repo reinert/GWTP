@@ -6,7 +6,7 @@ package com.gwtplatform.mvp.databind.client;
  * source properties in Presenters with databind support.
  *
  * @author Danilo Reinert
- **/
+ */
 public interface HasBindingValues {
 
     <F> F getValue(String id);
