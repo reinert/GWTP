@@ -25,25 +25,25 @@ public class PresenterEngine<T> implements PropertyBinder<T>, Iterable<String> {
         PropertyAccessor propertyAccessor;
         Validator validator;
         Formatter formatter;
-        boolean autoFlush;
+        boolean autoRefresh;
 
-        Holder(boolean autoFlush, PropertyAccessor propertyAccessor, Validator validator, Formatter formatter) {
+        Holder(boolean autoRefresh, PropertyAccessor propertyAccessor, Validator validator, Formatter formatter) {
             this.propertyAccessor = propertyAccessor;
             this.validator = validator;
             this.formatter = formatter;
-            this.autoFlush = autoFlush;
+            this.autoRefresh = autoRefresh;
         }
 
-        Holder(boolean autoFlush, PropertyAccessor propertyAccessor) {
-            this(autoFlush, propertyAccessor, null, null);
+        Holder(boolean autoRefresh, PropertyAccessor propertyAccessor) {
+            this(autoRefresh, propertyAccessor, null, null);
         }
 
-        Holder(boolean autoFlush, PropertyAccessor propertyAccessor, Formatter formatter) {
-            this(autoFlush, propertyAccessor, null, formatter);
+        Holder(boolean autoRefresh, PropertyAccessor propertyAccessor, Formatter formatter) {
+            this(autoRefresh, propertyAccessor, null, formatter);
         }
 
-        Holder(boolean autoFlush, PropertyAccessor propertyAccessor, Validator validator) {
-            this(autoFlush, propertyAccessor, validator, null);
+        Holder(boolean autoRefresh, PropertyAccessor propertyAccessor, Validator validator) {
+            this(autoRefresh, propertyAccessor, validator, null);
         }
     }
 
@@ -81,12 +81,12 @@ public class PresenterEngine<T> implements PropertyBinder<T>, Iterable<String> {
         return bindProperty(true, id, propertyAccessor, formatter);
     }
 
-    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, ProvidesValue<T, F> providesValue) {
-        return bindProperty(autoFlush, id, providesValue, null);
+    public <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, ProvidesValue<T, F> providesValue) {
+        return bindProperty(autoRefresh, id, providesValue, null);
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, final ProvidesValue<T, F> providesValue,
+    public <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, final ProvidesValue<T, F> providesValue,
                                                 final ReadFormatter<F, ?> readFormatter) {
         final PropertyAccessor<T, F> propertyAccessor = new PropertyAccessor<T, F>() {
             @Override
@@ -114,27 +114,27 @@ public class PresenterEngine<T> implements PropertyBinder<T>, Iterable<String> {
                 }
             };
         }
-        return bindProperty(autoFlush, id, propertyAccessor, null, formatter);
+        return bindProperty(autoRefresh, id, propertyAccessor, null, formatter);
     }
 
-    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor) {
-        return bindProperty(autoFlush, id, propertyAccessor, null, null);
+    public <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor) {
+        return bindProperty(autoRefresh, id, propertyAccessor, null, null);
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor,
+    public <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor,
                                                 Formatter<F, ?> formatter) {
-        return bindProperty(autoFlush, id, propertyAccessor, null, formatter);
+        return bindProperty(autoRefresh, id, propertyAccessor, null, formatter);
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor,
+    public <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor,
                                  Validator<T, F> validator) {
-        return bindProperty(autoFlush, id, propertyAccessor, validator, null);
+        return bindProperty(autoRefresh, id, propertyAccessor, validator, null);
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor,
+    public <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor,
                                  Validator<T, F> validator, Formatter<F, ?> formatter) {
         if (holderMap.containsKey(id)) {
             Holder holder = holderMap.get(id);
@@ -142,7 +142,7 @@ public class PresenterEngine<T> implements PropertyBinder<T>, Iterable<String> {
             holder.validator = validator;
             holder.formatter = formatter;
         } else {
-            Holder holder = new Holder(autoFlush, propertyAccessor, validator, formatter);
+            Holder holder = new Holder(autoRefresh, propertyAccessor, validator, formatter);
             holderMap.put(id, holder);
         }
         return BinderHandlerRegistration.of(this, id);
@@ -197,8 +197,8 @@ public class PresenterEngine<T> implements PropertyBinder<T>, Iterable<String> {
         return holderMap.get(id).validator;
     }
 
-    public boolean isAutoFlush(String id) {
-        return holderMap.get(id).autoFlush;
+    public boolean isAutoRefresh(String id) {
+        return holderMap.get(id).autoRefresh;
     }
 
     public boolean hasProperty(String id) {

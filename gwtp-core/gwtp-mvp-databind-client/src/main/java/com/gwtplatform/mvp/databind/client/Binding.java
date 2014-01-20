@@ -70,37 +70,37 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, ProvidesValue<T, F> providesValue) {
-        return engine.bindProperty(autoFlush, id, providesValue);
+    public <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, ProvidesValue<T, F> providesValue) {
+        return engine.bindProperty(autoRefresh, id, providesValue);
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor) {
-        return engine.bindProperty(autoFlush, id, propertyAccessor);
+    public <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor) {
+        return engine.bindProperty(autoRefresh, id, propertyAccessor);
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, ProvidesValue<T, F> providesValue,
+    public <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, ProvidesValue<T, F> providesValue,
                                                 ReadFormatter<F, ?> readFormatter) {
-        return engine.bindProperty(autoFlush, id, providesValue, readFormatter);
+        return engine.bindProperty(autoRefresh, id, providesValue, readFormatter);
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor,
+    public <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor,
                                                 Formatter<F, ?> formatter) {
-        return engine.bindProperty(autoFlush, id, propertyAccessor, formatter);
+        return engine.bindProperty(autoRefresh, id, propertyAccessor, formatter);
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor,
+    public <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor,
                                                 Validator<T, F> validatesValue) {
-        return engine.bindProperty(autoFlush, id, propertyAccessor, validatesValue);
+        return engine.bindProperty(autoRefresh, id, propertyAccessor, validatesValue);
     }
 
     @Override
-    public <F> HandlerRegistration bindProperty(boolean autoFlush, String id, PropertyAccessor<T, F> propertyAccessor,
+    public <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor,
                                                 Validator<T, F> validatesValue, Formatter<F, ?> formatter) {
-        return engine.bindProperty(autoFlush, id, propertyAccessor, validatesValue, formatter);
+        return engine.bindProperty(autoRefresh, id, propertyAccessor, validatesValue, formatter);
     }
 
     /**
@@ -163,8 +163,8 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
      * @param id identification of the property
      * @return {@code true} if property is set to view by updating the model, {@code false} otherwise
      */
-    public boolean isAutoFlush(String id) {
-        return engine.isAutoFlush(id);
+    public boolean isAutoRefresh(String id) {
+        return engine.isAutoRefresh(id);
     }
 
     /**
@@ -238,7 +238,7 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
      */
     public void refreshAutoOnly() {
         for (String id : engine) {
-            if (engine.isAutoFlush(id)) {
+            if (engine.isAutoRefresh(id)) {
                 setValueToView(id);
             }
         }
