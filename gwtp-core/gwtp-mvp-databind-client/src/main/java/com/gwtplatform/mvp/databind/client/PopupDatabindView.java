@@ -2,7 +2,6 @@ package com.gwtplatform.mvp.databind.client;
 
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.PopupView;
-import com.gwtplatform.mvp.client.View;
 
 /**
  * @author Danilo Reinert

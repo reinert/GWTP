@@ -3,9 +3,6 @@ package com.gwtplatform.mvp.databind.client;
 import com.google.gwt.user.client.TakesValue;
 import com.google.gwt.user.client.ui.HasValue;
 import com.gwtplatform.mvp.databind.client.mock.HasValueMock;
-import com.gwtplatform.mvp.databind.client.validation.InvalidValueHandler;
-import com.gwtplatform.mvp.databind.client.validation.ValidationHandler;
-import com.gwtplatform.mvp.databind.client.validation.ValidationMessage;
 import junit.framework.TestCase;
 
 /**

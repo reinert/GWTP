@@ -5,7 +5,6 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.client.PopupViewWithUiHandlers;
-import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.gwtplatform.mvp.databind.client.validation.InvalidValueHandler;
 import com.gwtplatform.mvp.databind.client.validation.ValidationHandler;
 import com.gwtplatform.mvp.databind.client.validation.ValidationMessage;
