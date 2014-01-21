@@ -16,11 +16,6 @@
 
 package com.gwtplatform.carstore.client.application.cars.car;
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import com.google.gwt.user.client.Window;
 import com.google.inject.assistedinject.Assisted;
 import com.google.web.bindery.event.shared.EventBus;
@@ -54,6 +49,10 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.databind.client.Binding;
 import com.gwtplatform.mvp.databind.client.DatabindView;
+
+import javax.inject.Inject;
+import java.util.Arrays;
+import java.util.List;
 
 public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
         implements CarUiHandlers, NavigationTab, GoBackEvent.GoBackHandler, ActionBarEvent.ActionBarHandler {

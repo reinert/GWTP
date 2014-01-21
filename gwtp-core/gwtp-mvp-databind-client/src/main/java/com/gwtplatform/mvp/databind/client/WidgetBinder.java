@@ -14,11 +14,11 @@ public interface WidgetBinder extends Binder {
      * Every time an event related to the selected strategy occurs, the updated value is sent to the
      * uiHandlers (Presenter)
      *
-     * @param id
-     * @param widget
-     * @param strategy
-     * @param <F>
-     * @return
+     * @param id identification of property
+     * @param widget widget to bind
+     * @param strategy strategy of value update
+     * @param <F> value type
+     * @return HandlerRegistration of this binding
      */
     <F> HandlerRegistration bind(String id, HasValue<F> widget, Strategy strategy);
 

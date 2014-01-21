@@ -16,8 +16,6 @@
 
 package com.gwtplatform.carstore.client.application.manufacturer.ui;
 
-import javax.inject.Inject;
-
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.carstore.client.application.event.DisplayMessageEvent;
 import com.gwtplatform.carstore.client.application.manufacturer.event.ManufacturerAddedEvent;
@@ -35,6 +33,8 @@ import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.proxy.RevealRootPopupContentEvent;
 import com.gwtplatform.mvp.databind.client.Binding;
 import com.gwtplatform.mvp.databind.client.DatabindView;
+
+import javax.inject.Inject;
 
 public class EditManufacturerPresenter extends PresenterWidget<MyView> implements EditManufacturerUiHandlers {
 

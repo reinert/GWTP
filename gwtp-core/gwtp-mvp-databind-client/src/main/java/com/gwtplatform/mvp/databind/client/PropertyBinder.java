@@ -3,9 +3,7 @@ package com.gwtplatform.mvp.databind.client;
 
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.databind.client.format.Formatter;
-import com.gwtplatform.mvp.databind.client.format.ReadFormatter;
 import com.gwtplatform.mvp.databind.client.property.PropertyAccessor;
-import com.gwtplatform.mvp.databind.client.property.ProvidesValue;
 import com.gwtplatform.mvp.databind.client.validation.Validator;
 
 /**
