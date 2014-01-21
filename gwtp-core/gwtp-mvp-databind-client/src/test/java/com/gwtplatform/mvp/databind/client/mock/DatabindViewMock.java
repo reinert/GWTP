@@ -8,6 +8,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.databind.client.DatabindUiHandlers;
 import com.gwtplatform.mvp.databind.client.DatabindView;
 import com.gwtplatform.mvp.databind.client.DatabindViewEngine;
+import com.gwtplatform.mvp.databind.client.Strategy;
 import com.gwtplatform.mvp.databind.client.validation.ValidationMessage;
 
 /**

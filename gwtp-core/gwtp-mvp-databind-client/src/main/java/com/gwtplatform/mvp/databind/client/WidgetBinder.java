@@ -9,9 +9,6 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  */
 public interface WidgetBinder extends Binder {
 
-    // TODO: Add other strategies: onKey(Up).
-    public enum Strategy {ON_CHANGE, NONE}
-
     /**
      * Bind a widget to a property id.
      * Every time an event related to the selected strategy occurs, the updated value is sent to the

@@ -48,9 +48,9 @@ public class BindingTest extends TestCase {
         final HasValue<Date> dateWidget = new HasValueMock<Date>();
 
         // Bind widgets
-        mockView.bind(stringProperty, stringWidget);
+        mockView.bind(stringProperty, stringWidget, Strategy.ON_CHANGE);
         mockView.bind(intProperty, intWidget);
-        mockView.bind(dateProperty, dateWidget);
+        mockView.bind(dateProperty, dateWidget, Strategy.ON_CHANGE);
 
 
         //===================================================================
@@ -165,9 +165,9 @@ public class BindingTest extends TestCase {
         final HasValue<Long> longWidget = new HasValueMock<Long>();
 
         // Bind widgets
-        mockView.bind(stringProperty, doubleWidget, WidgetBinder.Strategy.ON_CHANGE);
+        mockView.bind(stringProperty, doubleWidget, Strategy.ON_CHANGE);
         mockView.bind(intProperty, stringWidget);
-        mockView.bind(dateProperty, longWidget, WidgetBinder.Strategy.ON_CHANGE);
+        mockView.bind(dateProperty, longWidget, Strategy.ON_CHANGE);
 
 
         //===================================================================
