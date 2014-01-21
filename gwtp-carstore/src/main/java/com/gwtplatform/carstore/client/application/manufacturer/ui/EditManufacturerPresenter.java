@@ -103,7 +103,7 @@ public class EditManufacturerPresenter extends PresenterWidget<MyView> implement
     protected void onBind() {
         super.onBind();
 
-        registerHandler(binding.bindProperty("name", ManufacturerDtoProperties.NAME));
+        registerHandler(binding.bind("name", ManufacturerDtoProperties.NAME));
     }
 
     private void reveal() {

@@ -19,7 +19,6 @@ package com.gwtplatform.carstore.client.application.manufacturer;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import com.google.common.base.Strings;
@@ -56,7 +55,6 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.databind.client.Binding;
 import com.gwtplatform.mvp.databind.client.DatabindView;
-import com.gwtplatform.mvp.databind.client.property.TextPropertyAccessor;
 
 public class ManufacturerDetailPresenter extends Presenter<MyView, MyProxy>
         implements GoBackEvent.GoBackHandler, ActionBarEvent.ActionBarHandler, ManufacturerDetailUiHandlers {
@@ -163,7 +161,7 @@ public class ManufacturerDetailPresenter extends Presenter<MyView, MyProxy>
         addRegisteredHandler(GoBackEvent.getType(), this);
         addRegisteredHandler(ActionBarEvent.getType(), this);
 
-        registerHandler(binding.bindProperty("name", ManufacturerDtoProperties.NAME));
+        registerHandler(binding.bind("name", ManufacturerDtoProperties.NAME));
     }
 
     @Override

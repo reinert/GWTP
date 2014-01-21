@@ -8,6 +8,7 @@ import com.gwtplatform.mvp.databind.client.mock.DatabindViewMock;
 import com.gwtplatform.mvp.databind.client.mock.HasValueMock;
 import com.gwtplatform.mvp.databind.client.mock.TakesValueMock;
 import com.gwtplatform.mvp.databind.client.property.DatePropertyAccessor;
+import com.gwtplatform.mvp.databind.client.property.IntPropertyAccessor;
 import com.gwtplatform.mvp.databind.client.property.ProvidesInt;
 import com.gwtplatform.mvp.databind.client.property.TextPropertyAccessor;
 import junit.framework.TestCase;
@@ -61,7 +62,7 @@ public class BindingTest extends TestCase {
         final Binding<Model> binding = new Binding<Model>(mockView);
 
         // Bind accessors
-        binding.bindProperty(stringProperty, new TextPropertyAccessor<Model>() {
+        binding.bind(stringProperty, new TextPropertyAccessor<Model>() {
             @Override
             public void setValue(Model model, @Nullable String value) {
                 model.stringValue = value;
@@ -73,14 +74,19 @@ public class BindingTest extends TestCase {
                 return model.stringValue;
             }
         });
-        binding.bindProperty(intProperty, new ProvidesInt<Model>() {
+        binding.bind(intProperty, new IntPropertyAccessor<Model>() {
+            @Override
+            public void setValue(Model model, @Nullable Number value) {
+                model.intValue = (Integer) value;
+            }
+
             @Nullable
             @Override
             public Integer getValue(Model model) {
                 return model.intValue;
             }
         });
-        binding.bindProperty(false, dateProperty, new DatePropertyAccessor<Model>() {
+        binding.bind(false, dateProperty, new DatePropertyAccessor<Model>() {
             @Override
             public void setValue(Model model, @Nullable Date value) {
                 model.dateValue = value;
@@ -185,7 +191,12 @@ public class BindingTest extends TestCase {
                 return model.stringValue;
             }
         };
-        final ProvidesInt<Model> intProvidesValue = new ProvidesInt<Model>() {
+        final IntPropertyAccessor<Model> intProvidesValue = new IntPropertyAccessor<Model>() {
+            @Override
+            public void setValue(Model model, @Nullable Number value) {
+                model.intValue = (Integer) value;
+            }
+
             @Nullable
             @Override
             public Integer getValue(Model model) {
@@ -219,11 +230,17 @@ public class BindingTest extends TestCase {
                 return rawValue != null ? Double.valueOf(rawValue) : null;
             }
         };
-        final ReadFormatter<Number, String> intPropertyFormatter = new ReadFormatter<Number, String>() {
+        final Formatter<Number, String> intPropertyFormatter = new Formatter<Number, String>() {
             @Nullable
             @Override
             public String format(@Nullable Number rawValue) {
                 return rawValue != null ? String.valueOf(rawValue) : null;
+            }
+
+            @Nullable
+            @Override
+            public Number unformat(@Nullable String formattedValue) {
+                return formattedValue != null ? Integer.valueOf(formattedValue) : null;
             }
         };
         final Formatter<Date, Long> datePropertyFormatter = new Formatter<Date, Long>() {
@@ -241,9 +258,9 @@ public class BindingTest extends TestCase {
         };
 
         // Bind properties
-        binding.bindProperty(stringProperty, stringPropertyAccessor, stringPropertyFormatter);
-        binding.bindProperty(intProperty, intProvidesValue, intPropertyFormatter);
-        binding.bindProperty(false, dateProperty, datePropertyAccessor, datePropertyFormatter);
+        binding.bind(stringProperty, stringPropertyAccessor, stringPropertyFormatter);
+        binding.bind(intProperty, intProvidesValue, intPropertyFormatter);
+        binding.bind(false, dateProperty, datePropertyAccessor, datePropertyFormatter);
 
 
         // Assign new model

@@ -17,10 +17,8 @@
 package com.gwtplatform.carstore.client.application.cars.car;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import com.google.gwt.user.client.Window;
@@ -49,19 +47,13 @@ import com.gwtplatform.carstore.shared.dto.CarDto;
 import com.gwtplatform.carstore.shared.dto.CarPropertiesDto;
 import com.gwtplatform.carstore.shared.dto.ManufacturerDto;
 import com.gwtplatform.dispatch.rest.shared.RestDispatch;
-import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.databind.client.Binding;
 import com.gwtplatform.mvp.databind.client.DatabindView;
-import com.gwtplatform.mvp.databind.client.property.DatePropertyAccessor;
-import com.gwtplatform.mvp.databind.client.property.IntPropertyAccessor;
-import com.gwtplatform.mvp.databind.client.property.PropertyAccessor;
-import com.gwtplatform.mvp.databind.client.property.TextPropertyAccessor;
 
 public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
         implements CarUiHandlers, NavigationTab, GoBackEvent.GoBackHandler, ActionBarEvent.ActionBarHandler {
@@ -187,11 +179,11 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
         addRegisteredHandler(GoBackEvent.getType(), this);
         addRegisteredHandler(ActionBarEvent.getType(), this);
 
-        registerHandler(binding.bindProperty("model", CarDtoProperties.MODEL));
-        registerHandler(binding.bindProperty("manufacturer", CarDtoProperties.MANUFACTURER));
-        registerHandler(propertiesBinding.bindProperty("someString", CarPropertiesDtoProperties.SOME_STRING));
-        registerHandler(propertiesBinding.bindProperty("someNumber", CarPropertiesDtoProperties.SOME_NUMBER));
-        registerHandler(propertiesBinding.bindProperty("someDate", CarPropertiesDtoProperties.SOME_DATE));
+        registerHandler(binding.bind("model", CarDtoProperties.MODEL));
+        registerHandler(binding.bind("manufacturer", CarDtoProperties.MANUFACTURER));
+        registerHandler(propertiesBinding.bind("someString", CarPropertiesDtoProperties.SOME_STRING));
+        registerHandler(propertiesBinding.bind("someNumber", CarPropertiesDtoProperties.SOME_NUMBER));
+        registerHandler(propertiesBinding.bind("someDate", CarPropertiesDtoProperties.SOME_DATE));
     }
 
     @Override

@@ -15,34 +15,34 @@ import com.gwtplatform.mvp.databind.client.validation.Validator;
  */
 public interface PropertyBinder<T> extends Binder {
 
-    <F> HandlerRegistration bindProperty(String id, ProvidesValue<T, F> providesValue);
+//    <F> HandlerRegistration bind(String id, ProvidesValue<T, F> providesValue);
+//
+//    <F> HandlerRegistration bind(String id, ProvidesValue<T, F> providesValue,
+//                                         ReadFormatter<F, ?> readFormatter);
 
-    <F> HandlerRegistration bindProperty(String id, ProvidesValue<T, F> providesValue,
-                                         ReadFormatter<F, ?> readFormatter);
+    <F> HandlerRegistration bind(String id, PropertyAccessor<T, F> propertyAccessor);
 
-    <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor);
+    <F> HandlerRegistration bind(String id, PropertyAccessor<T, F> propertyAccessor,
+                                 Validator<T, F> validatesValue);
 
-    <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor,
-                                         Validator<T, F> validatesValue);
+    <F> HandlerRegistration bind(String id, PropertyAccessor<T, F> propertyAccessor,
+                                 Validator<T, F> validatesValue, Formatter<F, ?> formatter);
 
-    <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor,
-                                         Validator<T, F> validatesValue, Formatter<F, ?> formatter);
+    <F> HandlerRegistration bind(String id, PropertyAccessor<T, F> propertyAccessor, Formatter<F, ?> formatter);
 
-    <F> HandlerRegistration bindProperty(String id, PropertyAccessor<T, F> propertyAccessor, Formatter<F, ?> formatter);
+//    <F> HandlerRegistration bind(boolean autoRefresh, String id, ProvidesValue<T, F> providesValue);
+//
+//    <F> HandlerRegistration bind(boolean autoRefresh, String id, ProvidesValue<T, F> providesValue,
+//                                         ReadFormatter<F, ?> readFormatter);
 
-    <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, ProvidesValue<T, F> providesValue);
+    <F> HandlerRegistration bind(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor);
 
-    <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, ProvidesValue<T, F> providesValue,
-                                         ReadFormatter<F, ?> readFormatter);
+    <F> HandlerRegistration bind(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor,
+                                 Validator<T, F> validatesValue);
 
-    <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor);
+    <F> HandlerRegistration bind(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor,
+                                 Validator<T, F> validatesValue, Formatter<F, ?> formatter);
 
-    <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor,
-                                         Validator<T, F> validatesValue);
-
-    <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor,
-                                         Validator<T, F> validatesValue, Formatter<F, ?> formatter);
-
-    <F> HandlerRegistration bindProperty(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor,
-                                         Formatter<F, ?> formatter);
+    <F> HandlerRegistration bind(boolean autoRefresh, String id, PropertyAccessor<T, F> propertyAccessor,
+                                 Formatter<F, ?> formatter);
 }
