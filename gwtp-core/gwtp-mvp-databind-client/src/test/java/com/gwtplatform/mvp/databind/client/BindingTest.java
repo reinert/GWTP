@@ -289,8 +289,9 @@ public class BindingTest extends TestCase {
 
         // Widgets at View get new values
         final String expectedStringPropertyValue = "5.41";
-        doubleWidget.setValue(Double.valueOf(expectedStringPropertyValue));
         final Date expectedDatePropertyValue = new Date();
+
+        doubleWidget.setValue(Double.valueOf(expectedStringPropertyValue));
         longWidget.setValue(expectedDatePropertyValue.getTime());
 
 
@@ -299,5 +300,30 @@ public class BindingTest extends TestCase {
         assertEquals(expectedDatePropertyValue, binding.getValue(dateProperty));
         assertEquals(expectedStringPropertyValue, binding.getModel().stringValue);
         assertEquals(expectedDatePropertyValue, binding.getModel().dateValue);
+
+
+        // Model receives new values at Presenter
+        final Double expectedStringPropertyValueAtView = 6.38;
+        final String expectedIntPropertyValueAtView = "543";
+        final Long expectedDatePropertyValueAtView = new Date().getTime();
+
+        binding.setValue(stringProperty, String.valueOf(expectedStringPropertyValueAtView));
+        binding.setValue(dateProperty, new Date(expectedDatePropertyValueAtView));
+
+        // ProvidesValue does not allow to set value from binding
+        //binding.setValue(intProperty, Integer.valueOf(expectedIntPropertyValueAtView));
+        model.intValue = Integer.valueOf(expectedIntPropertyValueAtView);
+        binding.refresh(intProperty);
+
+
+        // Assert new values at View
+        assertEquals(expectedStringPropertyValueAtView, doubleWidget.getValue());
+        assertEquals(expectedStringPropertyValueAtView, mockView.getValue(stringProperty));
+
+        assertEquals(expectedIntPropertyValueAtView, stringWidget.getValue());
+        assertEquals(expectedIntPropertyValueAtView, mockView.getValue(intProperty));
+
+        assertEquals(expectedDatePropertyValueAtView, longWidget.getValue());
+        assertEquals(expectedDatePropertyValueAtView, mockView.getValue(dateProperty));
     }
 }
