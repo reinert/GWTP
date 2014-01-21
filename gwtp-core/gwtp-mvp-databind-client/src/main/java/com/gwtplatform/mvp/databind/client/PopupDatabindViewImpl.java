@@ -5,8 +5,6 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.client.PopupViewWithUiHandlers;
-import com.gwtplatform.mvp.databind.client.validation.InvalidValueHandler;
-import com.gwtplatform.mvp.databind.client.validation.ValidationHandler;
 import com.gwtplatform.mvp.databind.client.validation.ValidationMessage;
 
 /**
@@ -32,10 +30,16 @@ public class PopupDatabindViewImpl<H extends DatabindUiHandlers> extends PopupVi
     }
 
     @Override
-    public <F> HandlerRegistration bindReadOnlyWidget(String id, TakesValue<F> widget) {
-        return engine.bindReadOnlyWidget(id, widget);
+    public <F> HandlerRegistration bind(String id, HasValue<F> widget, Strategy strategy) {
+        return engine.bind(id, widget, strategy);
     }
 
+    @Override
+    public <F> HandlerRegistration bind(String id, TakesValue<F> widget) {
+        return engine.bind(id, widget);
+    }
+
+    /*
     @Override
     public <T, F> HandlerRegistration bindValidationHandler(String id, InvalidValueHandler<T, F> invalidValueHandler) {
         return engine.bindValidationHandler(id, invalidValueHandler);
@@ -45,11 +49,7 @@ public class PopupDatabindViewImpl<H extends DatabindUiHandlers> extends PopupVi
     public <T, F> HandlerRegistration bindValidationHandler(String id, ValidationHandler<T, F> validationHandler) {
         return engine.bindValidationHandler(id, validationHandler);
     }
-
-    @Override
-    public <F> HandlerRegistration bindWidget(String id, HasValue<F> widget) {
-        return engine.bindWidget(id, widget);
-    }
+    */
 
     @Override
     public <F> F getValue(String id) {
@@ -58,12 +58,12 @@ public class PopupDatabindViewImpl<H extends DatabindUiHandlers> extends PopupVi
 
     @Override
     public <T, F> void onInvalidValue(String id, T object, F value, ValidationMessage message) {
-        engine.onInvalidValue(id, object, value, message);
+        //engine.onInvalidValue(id, object, value, message);
     }
 
     @Override
     public <T, F> void onValidValue(String id, T object, F value, ValidationMessage message) {
-        engine.onValidValue(id, object, value, message);
+        //engine.onValidValue(id, object, value, message);
     }
 
     @Override

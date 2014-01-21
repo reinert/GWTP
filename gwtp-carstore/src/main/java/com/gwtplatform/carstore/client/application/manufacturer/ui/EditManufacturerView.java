@@ -42,7 +42,7 @@ public class EditManufacturerView extends PopupDatabindViewImpl<EditManufacturer
 
         initWidget(uiBinder.createAndBindUi(this));
 
-        bindWidget("name", name);
+        bind("name", name);
     }
 
     @UiHandler("save")

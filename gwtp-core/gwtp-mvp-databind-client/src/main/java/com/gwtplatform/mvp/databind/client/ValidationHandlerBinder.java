@@ -8,6 +8,7 @@ import com.gwtplatform.mvp.databind.client.validation.ValidationHandler;
 /**
  * @author Danilo Reinert
  */
+@Deprecated
 public interface ValidationHandlerBinder extends Binder {
 
     <T, F> HandlerRegistration bindValidationHandler(String id, ValidationHandler<T, F> validationHandler);

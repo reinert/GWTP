@@ -13,6 +13,7 @@ import java.util.Map;
 /**
  * @author Danilo Reinert
  */
+@Deprecated
 public class WidgetEngine implements WidgetBinder {
 
     private DatabindUiHandlers uiHandlers;
@@ -23,19 +24,23 @@ public class WidgetEngine implements WidgetBinder {
         this.uiHandlers = uiHandlers;
     }
 
-    public <F> HandlerRegistration bindWidget(final String id, final HasValue<F> widget) {
+    public <F> HandlerRegistration bind(String id, HasValue<F> widget, Strategy strategy) {
         //assert (widget instanceof IsWidget) : "HasValue parameter must be of type IsWidget";
 
-        // Add change handler to widget
+        // Add update handler to widget
         // TODO: Possible memory leak by binding same id many times, losing previous handler references
-        HandlerRegistration handlerRegistration = addChangeHandlerToBoundWidget(id, widget);
+        HandlerRegistration handlerRegistration = null;
+
+        if (strategy == Strategy.ON_CHANGE) {
+            handlerRegistration = addChangeHandlerToBoundWidget(id, widget);
+        }
 
         // Bind widget
         ensureMap().put(id, widget);
         return BinderHandlerRegistration.of(this, id, handlerRegistration);
     }
 
-    public <F> HandlerRegistration bindReadOnlyWidget(final String id, final TakesValue<F> widget) {
+    public <F> HandlerRegistration bind(String id, TakesValue<F> widget) {
         //assert (widget instanceof IsWidget) : "TakesValue parameter must be of type IsWidget";
 
         // Bind widget

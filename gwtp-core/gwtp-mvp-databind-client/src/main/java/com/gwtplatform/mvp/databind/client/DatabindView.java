@@ -7,5 +7,5 @@ import com.gwtplatform.mvp.client.View;
  * @author Danilo Reinert
  */
 public interface DatabindView<H extends DatabindUiHandlers> extends View, HasUiHandlers<H>, HasBindingValues,
-        WidgetBinder, ValidationHandlerBinder, DatabindValidationHandler {
+        WidgetBinder, DatabindValidationHandler /* , ValidationHandlerBinder */ {
 }

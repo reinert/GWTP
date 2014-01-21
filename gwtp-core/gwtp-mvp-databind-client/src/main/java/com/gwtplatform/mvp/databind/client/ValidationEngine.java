@@ -12,6 +12,7 @@ import java.util.Map;
 /**
  * @author Danilo Reinert
  */
+@Deprecated
 public class ValidationEngine implements ValidationHandlerBinder, DatabindValidationHandler {
 
     //TODO: substitute map by a simple javascript object to increase performance

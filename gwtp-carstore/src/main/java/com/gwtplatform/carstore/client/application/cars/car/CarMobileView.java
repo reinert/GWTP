@@ -58,11 +58,11 @@ public class CarMobileView extends DatabindViewImpl<CarUiHandlers> implements My
         someNumber.getElement().setAttribute("placeholder", "Property #2");
         someDate.getElement().setAttribute("placeholder", "Property #3");
 
-        bindWidget("model", model);
-        bindWidget("manufacturer", manufacturer);
-        bindWidget("someString", someString);
-        bindWidget("someNumber", someNumber);
-        bindWidget("someDate", someDate);
+        bind("model", model);
+        bind("manufacturer", manufacturer);
+        bind("someString", someString);
+        bind("someNumber", someNumber);
+        bind("someDate", someDate);
     }
 
     @Override

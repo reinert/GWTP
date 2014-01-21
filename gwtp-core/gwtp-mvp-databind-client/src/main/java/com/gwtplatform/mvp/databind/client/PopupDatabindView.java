@@ -7,5 +7,5 @@ import com.gwtplatform.mvp.client.PopupView;
  * @author Danilo Reinert
  */
 public interface PopupDatabindView<H extends DatabindUiHandlers> extends PopupView, HasUiHandlers<H>, HasBindingValues,
-        WidgetBinder, ValidationHandlerBinder, DatabindValidationHandler {
+        WidgetBinder, DatabindValidationHandler /*, ValidationHandlerBinder */ {
 }

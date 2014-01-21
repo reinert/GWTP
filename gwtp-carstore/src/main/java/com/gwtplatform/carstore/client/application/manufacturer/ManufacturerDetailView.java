@@ -41,7 +41,7 @@ public class ManufacturerDetailView extends DatabindViewImpl<ManufacturerDetailU
 
         name.getElement().setAttribute("placeholder", "Manufacturer name");
 
-        bindWidget("name", name);
+        bind("name", name);
     }
 }
 

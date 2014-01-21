@@ -3,13 +3,11 @@ package com.gwtplatform.mvp.databind.client;
 import com.google.gwt.user.client.TakesValue;
 import com.google.gwt.user.client.ui.HasValue;
 import com.gwtplatform.mvp.databind.client.format.Formatter;
-import com.gwtplatform.mvp.databind.client.format.ReadFormatter;
 import com.gwtplatform.mvp.databind.client.mock.DatabindViewMock;
 import com.gwtplatform.mvp.databind.client.mock.HasValueMock;
 import com.gwtplatform.mvp.databind.client.mock.TakesValueMock;
 import com.gwtplatform.mvp.databind.client.property.DatePropertyAccessor;
 import com.gwtplatform.mvp.databind.client.property.IntPropertyAccessor;
-import com.gwtplatform.mvp.databind.client.property.ProvidesInt;
 import com.gwtplatform.mvp.databind.client.property.TextPropertyAccessor;
 import junit.framework.TestCase;
 
@@ -50,9 +48,9 @@ public class BindingTest extends TestCase {
         final HasValue<Date> dateWidget = new HasValueMock<Date>();
 
         // Bind widgets
-        mockView.bindWidget(stringProperty, stringWidget);
-        mockView.bindReadOnlyWidget(intProperty, intWidget);
-        mockView.bindWidget(dateProperty, dateWidget);
+        mockView.bind(stringProperty, stringWidget);
+        mockView.bind(intProperty, intWidget);
+        mockView.bind(dateProperty, dateWidget);
 
 
         //===================================================================
@@ -167,9 +165,9 @@ public class BindingTest extends TestCase {
         final HasValue<Long> longWidget = new HasValueMock<Long>();
 
         // Bind widgets
-        mockView.bindWidget(stringProperty, doubleWidget);
-        mockView.bindReadOnlyWidget(intProperty, stringWidget);
-        mockView.bindWidget(dateProperty, longWidget);
+        mockView.bind(stringProperty, doubleWidget);
+        mockView.bind(intProperty, stringWidget);
+        mockView.bind(dateProperty, longWidget);
 
 
         //===================================================================
