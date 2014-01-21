@@ -15,7 +15,7 @@ public interface WidgetBinder extends Binder {
     /**
      * Bind a widget to a property id.
      * Every time an event related to the selected strategy occurs, the updated value is sent to the
-     * uiHandlers (Presenter).
+     * uiHandlers (Presenter)
      *
      * @param id
      * @param widget

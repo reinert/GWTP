@@ -3,9 +3,7 @@ package com.gwtplatform.mvp.databind.client;
 
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.databind.client.format.Formatter;
-import com.gwtplatform.mvp.databind.client.format.ReadFormatter;
 import com.gwtplatform.mvp.databind.client.property.PropertyAccessor;
-import com.gwtplatform.mvp.databind.client.property.ProvidesValue;
 import com.gwtplatform.mvp.databind.client.validation.Validation;
 import com.gwtplatform.mvp.databind.client.validation.Validator;
 
@@ -155,8 +153,9 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
      * @param id identification of the property
      * @return property accessor
      */
-    public PropertyAccessor<T, ?> getPropertyAccessor(String id) {
-        return engine.getPropertyAccessor(id);
+    @SuppressWarnings("unchecked")
+    public <V> PropertyAccessor<T, V> getPropertyAccessor(String id) {
+        return (PropertyAccessor<T, V>) engine.getPropertyAccessor(id);
     }
 
     /**
@@ -165,8 +164,9 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
      * @param id identification of the property
      * @return validator
      */
-    public Validator<T, ?> getValidator(String id) {
-        return engine.getValidatesValue(id);
+    @SuppressWarnings("unchecked")
+    public <V> Validator<T, V> getValidator(String id) {
+        return (Validator<T, V>) engine.getValidatesValue(id);
     }
 
     /**
@@ -207,17 +207,6 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
      */
     public boolean isAutoRefresh(String id) {
         return engine.isAutoRefresh(id);
-    }
-
-    /**
-     * Tells whether the specified value can be set to the property of the model.
-     *
-     * @param id    identification of the property
-     * @param value value to be validated
-     * @return validation
-     */
-    public Validation isValueValid(String id, Object value) {
-        return engine.isValueValid(id, model, value);
     }
 
     /**
@@ -345,11 +334,11 @@ public class Binding<T> implements PropertyBinder<T>, DatabindUiHandlers, Iterab
         if (validation.isValid()) {
             // If valid, then set to the model and fire valid value event
             engine.setFormattedValue(id, model, value);
-            view.onValidValue(id, model, value, validation.getValidationMessage());
+            view.onValidationSuccess(id, validation.getValidationMessage());
             return true;
         } else {
             // It must be executed only when a validation occurs and it returns invalid
-            view.onInvalidValue(id, model, value, validation.getValidationMessage());
+            view.onValidationFailure(id, validation.getValidationMessage());
         }
 
         return false;

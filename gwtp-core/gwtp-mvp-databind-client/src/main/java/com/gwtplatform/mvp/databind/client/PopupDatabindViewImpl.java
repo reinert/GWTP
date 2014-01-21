@@ -57,13 +57,13 @@ public class PopupDatabindViewImpl<H extends DatabindUiHandlers> extends PopupVi
     }
 
     @Override
-    public <T, F> void onInvalidValue(String id, T object, F value, ValidationMessage message) {
-        //engine.onInvalidValue(id, object, value, message);
+    public void onValidationFailure(String id, ValidationMessage message) {
+        //engine.onValidationFailure(id, object, value, message);
     }
 
     @Override
-    public <T, F> void onValidValue(String id, T object, F value, ValidationMessage message) {
-        //engine.onValidValue(id, object, value, message);
+    public void onValidationSuccess(String id, ValidationMessage message) {
+        //engine.onValidationSuccess(id, object, value, message);
     }
 
     @Override

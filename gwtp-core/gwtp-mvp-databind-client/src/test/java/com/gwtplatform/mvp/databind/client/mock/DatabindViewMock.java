@@ -8,8 +8,6 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.databind.client.DatabindUiHandlers;
 import com.gwtplatform.mvp.databind.client.DatabindView;
 import com.gwtplatform.mvp.databind.client.DatabindViewEngine;
-import com.gwtplatform.mvp.databind.client.validation.InvalidValueHandler;
-import com.gwtplatform.mvp.databind.client.validation.ValidationHandler;
 import com.gwtplatform.mvp.databind.client.validation.ValidationMessage;
 
 /**
@@ -45,13 +43,13 @@ public class DatabindViewMock<H extends DatabindUiHandlers> implements DatabindV
     }
 
     @Override
-    public <T, F> void onInvalidValue(String id, T object, F value, ValidationMessage message) {
-        //engine.onInvalidValue(id, object, value, message);
+    public void onValidationFailure(String id, ValidationMessage message) {
+        //engine.onValidationFailure(id, object, value, message);
     }
 
     @Override
-    public <T, F> void onValidValue(String id, T object, F value, ValidationMessage message) {
-        //engine.onValidValue(id, object, value, message);
+    public void onValidationSuccess(String id, ValidationMessage message) {
+        //engine.onValidationSuccess(id, object, value, message);
     }
 
     @Override

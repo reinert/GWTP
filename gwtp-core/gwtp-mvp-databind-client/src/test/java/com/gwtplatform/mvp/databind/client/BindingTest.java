@@ -165,9 +165,9 @@ public class BindingTest extends TestCase {
         final HasValue<Long> longWidget = new HasValueMock<Long>();
 
         // Bind widgets
-        mockView.bind(stringProperty, doubleWidget);
+        mockView.bind(stringProperty, doubleWidget, WidgetBinder.Strategy.ON_CHANGE);
         mockView.bind(intProperty, stringWidget);
-        mockView.bind(dateProperty, longWidget);
+        mockView.bind(dateProperty, longWidget, WidgetBinder.Strategy.ON_CHANGE);
 
 
         //===================================================================

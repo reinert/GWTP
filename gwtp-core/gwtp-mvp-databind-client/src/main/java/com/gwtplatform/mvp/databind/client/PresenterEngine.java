@@ -152,6 +152,13 @@ public class PresenterEngine<T> implements PropertyBinder<T>, Iterable<String> {
         return BinderHandlerRegistration.of(this, id);
     }
 
+    /**
+     * Tells whether the specified value can be set to the property of the model.
+     *
+     * @param id    identification of the property
+     * @param value value to be validated
+     * @return validation
+     */
     public Validation isValueValid(String id, T data, Object value) {
         PropertyBinding propertyBinding = properties.get(id);
         if (propertyBinding != null && propertyBinding.validator != null) {

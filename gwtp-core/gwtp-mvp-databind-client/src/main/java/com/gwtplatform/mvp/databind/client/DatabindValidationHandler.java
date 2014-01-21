@@ -10,17 +10,21 @@ import javax.annotation.Nullable;
  * @author Danilo Reinert
  * @see com.gwtplatform.mvp.databind.client.validation.ValidationHandler
  */
-public interface DatabindValidationHandler extends DatabindInvalidValueHandler {
+public interface DatabindValidationHandler {
+
+    /**
+     * Notify the view of a invalid try to update a property on the model.
+     *
+     * @param property model's property id
+     * @param message  message from presenter
+     */
+    void onValidationFailure(String property, @Nullable ValidationMessage message);
 
     /**
      * Notify the view of a property updated on model.
      *
      * @param property model's property id
-     * @param object   model object
-     * @param value    updated value
      * @param message  message from presenter
-     * @param <T> Model type
-     * @param <F> Value type
      */
-    <T, F> void onValidValue(String property, T object, F value, @Nullable ValidationMessage message);
+    void onValidationSuccess(String property, @Nullable ValidationMessage message);
 }

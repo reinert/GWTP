@@ -7,14 +7,12 @@ package com.gwtplatform.mvp.databind.client.validation;
  *
  * @author Danilo Reinert
  */
-public interface ValidationHandler<T, F> extends InvalidValueHandler<T, F> {
+public interface ValidationHandler extends ValidationFailureHandler {
 
     /**
      * Called when a *valid* validation event occurs.
      *
-     * @param object model
-     * @param value flushed value
      * @param message validation message provided by the binding
      */
-    void onValidValue(T object, F value, ValidationMessage message);
+    void onValidationSuccess(ValidationMessage message);
 }

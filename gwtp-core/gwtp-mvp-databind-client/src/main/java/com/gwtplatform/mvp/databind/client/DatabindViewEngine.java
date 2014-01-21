@@ -7,12 +7,8 @@ import com.google.gwt.user.client.TakesValue;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.client.HasUiHandlers;
-import com.gwtplatform.mvp.databind.client.validation.InvalidValueHandler;
-import com.gwtplatform.mvp.databind.client.validation.ValidationHandler;
-import com.gwtplatform.mvp.databind.client.validation.ValidationMessage;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -51,23 +47,23 @@ public class DatabindViewEngine implements WidgetBinder, HasBindingValues, HasUi
 
     /*
     @Override
-    public <T, F> void onInvalidValue(String id, T object, F value, ValidationMessage message) {
+    public void onValidationFailure(String id, ValidationMessage message) {
         WidgetBinding widgetBinding = bindings.get(id);
         if (widgetBinding != null && widgetBinding.validationHandler != null) {
-            widgetBinding.validationHandler.onInvalidValue(object, value, message);
+            widgetBinding.validationHandler.onValidationFailure(message);
         }
     }
 
     @Override
-    public <T, F> void onValidValue(String id, T object, F value, ValidationMessage message) {
+    public void onValidationSuccess(String id, ValidationMessage message) {
         WidgetBinding widgetBinding = bindings.get(id);
         if (widgetBinding != null && widgetBinding.validationHandler != null) {
-            widgetBinding.validationHandler.onValidValue(object, value, message);
+            widgetBinding.validationHandler.onValidationSuccess(message);
         }
     }
 
     @Override
-    public <T, F> HandlerRegistration bindValidationHandler(String id, ValidationHandler<T, F> validationHandler) {
+    public HandlerRegistration bindValidationHandler(String id, ValidationHandler validationHandler) {
         WidgetBinding widgetBinding;
         if (bindings.containsKey(id)) {
             widgetBinding = bindings.get(id);
@@ -77,20 +73,6 @@ public class DatabindViewEngine implements WidgetBinder, HasBindingValues, HasUi
             bindings.put(id, widgetBinding);
         }
         return BinderHandlerRegistration.of(this, id);
-    }
-
-    @Override
-    public <T, F> HandlerRegistration bindValidationHandler(String id,
-                                                         final InvalidValueHandler<T, F> invalidValueHandler) {
-        return bindValidationHandler(id, new ValidationHandler<T, F>() {
-            @Override
-            public void onValidValue(T object, F value, ValidationMessage message) {}
-
-            @Override
-            public void onInvalidValue(T object, F value, ValidationMessage message) {
-                invalidValueHandler.onInvalidValue(object, value, message);
-            }
-        });
     }
     */
 
@@ -164,7 +146,7 @@ public class DatabindViewEngine implements WidgetBinder, HasBindingValues, HasUi
         return widget.addValueChangeHandler(new ValueChangeHandler<F>() {
             @Override
             public void onValueChange(ValueChangeEvent<F> event) {
-                // Avoid NPE. The null uiHandlers should be notified before reach here.
+                // Avoid NPE. The null uiHandlers should be notified before reaching here.
                 if (uiHandlers != null) {
                     uiHandlers.onValueChanged(id, event.getValue());
                 }

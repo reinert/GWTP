@@ -2,7 +2,7 @@ package com.gwtplatform.mvp.databind.client;
 
 
 import com.google.web.bindery.event.shared.HandlerRegistration;
-import com.gwtplatform.mvp.databind.client.validation.InvalidValueHandler;
+import com.gwtplatform.mvp.databind.client.validation.ValidationFailureHandler;
 import com.gwtplatform.mvp.databind.client.validation.ValidationHandler;
 
 /**
@@ -11,7 +11,7 @@ import com.gwtplatform.mvp.databind.client.validation.ValidationHandler;
 @Deprecated
 public interface ValidationHandlerBinder extends Binder {
 
-    <T, F> HandlerRegistration bindValidationHandler(String id, ValidationHandler<T, F> validationHandler);
+    HandlerRegistration bindValidationHandler(String id, ValidationHandler validationHandler);
 
-    <T, F> HandlerRegistration bindValidationHandler(String id, InvalidValueHandler<T, F> invalidValueHandler);
+    HandlerRegistration bindValidationHandler(String id, ValidationFailureHandler validationFailureHandler);
 }
