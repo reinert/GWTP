@@ -27,7 +27,7 @@ public class DatabindViewEngineTest extends TestCase {
         doTestBindWidget(new BindWidgetCallback() {
             @Override
             public void bind(DatabindViewEngine engine, String propertyId, TakesValue widget) {
-                engine.bind(propertyId, (HasValue<?>) widget);
+                engine.bind(propertyId, (HasValue<?>) widget, Strategy.ON_CHANGE);
             }
         });
     }

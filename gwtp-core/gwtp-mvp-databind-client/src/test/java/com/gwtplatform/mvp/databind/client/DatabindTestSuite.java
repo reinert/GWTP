@@ -13,10 +13,14 @@ public class DatabindTestSuite {
     public static Test suite() {
         TestSuite suite = new TestSuite("Databind tests");
 
+        /* Validators */
         suite.addTestSuite(RequiredValidatorTest.class);
         suite.addTestSuite(EmailValidatorTest.class);
 
+        /* View */
         suite.addTestSuite(DatabindViewEngineTest.class);
+
+        /* Presenter */
         suite.addTestSuite(BindingTest.class);
 
         return suite;
