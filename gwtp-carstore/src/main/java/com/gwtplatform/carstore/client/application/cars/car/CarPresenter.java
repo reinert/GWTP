@@ -16,17 +16,17 @@
 
 package com.gwtplatform.carstore.client.application.cars.car;
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.inject.Inject;
-
+import com.github.reinert.ko.databind.client.Binding;
+import com.github.reinert.ko.databind.client.BindingImpl;
+import com.github.reinert.ko.gwtp.client.DatabindView;
 import com.google.gwt.user.client.Window;
 import com.google.inject.assistedinject.Assisted;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.carstore.client.application.cars.car.CarPresenter.MyView;
 import com.gwtplatform.carstore.client.application.cars.car.navigation.NavigationTab;
 import com.gwtplatform.carstore.client.application.cars.car.navigation.NavigationTabEvent;
+import com.gwtplatform.carstore.client.application.cars.car.properties.CarDtoProperties;
+import com.gwtplatform.carstore.client.application.cars.car.properties.CarPropertiesDtoProperties;
 import com.gwtplatform.carstore.client.application.cars.event.CarAddedEvent;
 import com.gwtplatform.carstore.client.application.event.ActionBarEvent;
 import com.gwtplatform.carstore.client.application.event.ChangeActionBarEvent;
@@ -42,27 +42,24 @@ import com.gwtplatform.carstore.client.rest.ManufacturerService;
 import com.gwtplatform.carstore.client.util.AbstractAsyncCallback;
 import com.gwtplatform.carstore.client.util.ErrorHandlerAsyncCallback;
 import com.gwtplatform.carstore.shared.dto.CarDto;
+import com.gwtplatform.carstore.shared.dto.CarPropertiesDto;
 import com.gwtplatform.carstore.shared.dto.ManufacturerDto;
 import com.gwtplatform.dispatch.rest.shared.RestDispatch;
-import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+import javax.inject.Inject;
+import java.util.Arrays;
+import java.util.List;
+
 public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
         implements CarUiHandlers, NavigationTab, GoBackEvent.GoBackHandler, ActionBarEvent.ActionBarHandler {
 
-    public interface MyView extends View, HasUiHandlers<CarUiHandlers> {
-        void edit(CarDto carDto);
-
+    public interface MyView extends DatabindView<CarUiHandlers> {
         void setAllowedManufacturers(List<ManufacturerDto> manufacturerDtos);
-
-        void resetFields(CarDto carDto);
-
-        void getCar();
     }
 
     public interface MyProxy extends ProxyPlace<CarPresenter> {
@@ -74,8 +71,8 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
     private final RestDispatch dispatcher;
     private final PlaceManager placeManager;
     private final CarProxyFactory carProxyFactory;
-
-    private CarDto carDto;
+    private final Binding<CarDto> binding;
+    private final Binding<CarPropertiesDto> propertiesBinding;
 
     @Inject
     public CarPresenter(EventBus eventBus,
@@ -96,7 +93,11 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
         this.messages = messages;
         this.placeManager = placeManager;
         this.carProxyFactory = carProxyFactory;
-        this.carDto = carDto != null ? carDto : new CarDto();
+        this.binding = new BindingImpl<CarDto>(view);
+        this.propertiesBinding = new BindingImpl<CarPropertiesDto>(view);
+
+        carDto = carDto != null ? carDto : new CarDto();
+        setCarDto(carDto);
 
         getView().setUiHandlers(this);
     }
@@ -110,11 +111,13 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
     public void onActionEvent(ActionBarEvent event) {
         if (event.isTheSameToken(NameTokens.newCar)) {
             if (event.getActionType() == ActionType.DONE) {
-                getView().getCar();
+                flush();
+                onSave();
             }
-        } else if (event.isTheSameToken(carDto.getManufacturer().getName() + carDto.getModel())) {
+        } else if (event.isTheSameToken(binding.getModel().getManufacturer().getName() + binding.getModel().getModel())) {
             if (event.getActionType() == ActionType.UPDATE) {
-                getView().getCar();
+                flush();
+                onSave();
             } else if (event.getActionType() == ActionType.DELETE) {
                 onDeleteCar();
             }
@@ -127,7 +130,8 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
     }
 
     @Override
-    public void onSave(final CarDto carDto) {
+    public void onSave() {
+        final CarDto carDto = binding.getModel();
         dispatcher.execute(carService.saveOrCreate(carDto), new ErrorHandlerAsyncCallback<CarDto>(this) {
             @Override
             public void onSuccess(CarDto newCar) {
@@ -138,6 +142,7 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
 
     @Override
     public String getName() {
+        final CarDto carDto = binding.getModel();
         if (carDto.getId() != null) {
             return carDto.getManufacturer().getName() + " " + carDto.getModel();
         } else {
@@ -156,9 +161,21 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
     }
 
     @Override
+    public void onValueChanged(String id, Object value) {
+        binding.onValueChanged(id, value);
+        propertiesBinding.onValueChanged(id, value);
+    }
+
+    @Override
     protected void onBind() {
         addRegisteredHandler(GoBackEvent.getType(), this);
         addRegisteredHandler(ActionBarEvent.getType(), this);
+
+        registerHandler(binding.bind("model", CarDtoProperties.MODEL));
+        registerHandler(binding.bind("manufacturer", CarDtoProperties.MANUFACTURER));
+        registerHandler(propertiesBinding.bind("someString", CarPropertiesDtoProperties.SOME_STRING));
+        registerHandler(propertiesBinding.bind("someNumber", CarPropertiesDtoProperties.SOME_NUMBER));
+        registerHandler(propertiesBinding.bind("someDate", CarPropertiesDtoProperties.SOME_DATE));
     }
 
     @Override
@@ -190,7 +207,12 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
 
     private void onGetManufacturerSuccess(List<ManufacturerDto> manufacturerDtos) {
         getView().setAllowedManufacturers(manufacturerDtos);
-        getView().edit(carDto);
+        refresh();
+    }
+
+    private void flush() {
+        propertiesBinding.flush();
+        binding.flush();
     }
 
     private void onCarSaved(CarDto oldCar, CarDto newCar) {
@@ -198,8 +220,8 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
         CarAddedEvent.fire(CarPresenter.this, newCar, oldCar.getId() == null);
 
         if (oldCar.getId() == null) {
-            carDto = new CarDto();
-            getView().resetFields(carDto);
+            final CarDto carDto = new CarDto();
+            setCarDto(carDto);
 
             MyProxy proxy = carProxyFactory.create(newCar, newCar.getManufacturer().getName() + newCar.getModel());
 
@@ -208,6 +230,7 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
     }
 
     private void onDeleteCar() {
+        final CarDto carDto = binding.getModel();
         Boolean confirm = Window.confirm("Are you sure you want to delete " + carDto.getModel() + "?");
         if (confirm) {
             dispatcher.execute(carService.delete(carDto.getId()), new ErrorHandlerAsyncCallback<Void>(this) {
@@ -217,5 +240,17 @@ public class CarPresenter extends Presenter<MyView, CarPresenter.MyProxy>
                 }
             });
         }
+    }
+
+    private void refresh() {
+        binding.refresh();
+        propertiesBinding.refresh();
+    }
+
+    private void setCarDto(CarDto carDto) {
+        binding.setModel(carDto);
+        // #binding.model.carProperties will always be updated since it references #propertiesBinding.model
+        // which ensures the updated state.
+        propertiesBinding.setModel(carDto.getCarProperties());
     }
 }
