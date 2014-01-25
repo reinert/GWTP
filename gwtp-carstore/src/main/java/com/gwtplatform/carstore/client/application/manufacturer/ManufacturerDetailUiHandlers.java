@@ -16,9 +16,8 @@
 
 package com.gwtplatform.carstore.client.application.manufacturer;
 
-import com.gwtplatform.carstore.shared.dto.ManufacturerDto;
-import com.gwtplatform.mvp.client.UiHandlers;
+import com.github.reinert.ko.gwtp.client.DatabindUiHandlers;
 
-public interface ManufacturerDetailUiHandlers extends UiHandlers {
-    void onSave(ManufacturerDto manufacturerDto);
+public interface ManufacturerDetailUiHandlers extends DatabindUiHandlers {
+    void onSave();
 }
